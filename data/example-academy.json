@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "academies": [
+    {
+      "id": "greece-ai-academy",
+      "name": "Free AI Academy Greece",
+      "status": "published",
+      "branding": {
+        "primaryColor": "#6d5dfc",
+        "language": "el",
+        "logoUrl": null
+      },
+      "courses": [
+        {
+          "id": "ai-foundations",
+          "title": "AI Foundations",
+          "lessons": ["ai-foundations-01", "ai-foundations-02"],
+          "quizzes": ["ai-foundations-quiz"]
+        }
+      ],
+      "projects": [
+        {
+          "id": "first-ai-tool",
+          "title": "Build your first AI tool",
+          "requirements": ["working-prototype", "README", "testing", "accessibility", "responsible-ai"]
+        }
+      ],
+      "release": {
+        "stage": "production",
+        "qaPassed": true,
+        "repository": "panoskhan/free-ai-academy-greece",
+        "commitSha": null,
+        "previewUrl": null
+      }
+    }
+  ]
+}
