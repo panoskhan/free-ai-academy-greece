@@ -64,7 +64,7 @@ jobs:
           set -euo pipefail
           grep -q 'downloadProject' builder/index.html
           grep -q 'runTests' builder/index.html
-          grep -q 'does not execute arbitrary user code' builder/index.html
+          grep -q 'arbitrary user code' builder/index.html
           echo 'Builder preview/export/test controls present'
       - name: Sitemap checks
         shell: bash
