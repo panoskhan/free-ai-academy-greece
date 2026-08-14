@@ -71,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           grep -q '<urlset' sitemap.xml
-          for path in student-path/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html builder/index.html creator-dashboard/index.html creator-dashboard/github-connect.html preview/index.html qa/link-checklist.html qa/launch-checklist.html; do
-            grep -q "$path" sitemap.xml || { echo "Missing sitemap entry: $path"; exit 1; }
+          for path in '/student-path/' '/projects/' '/assessment/' '/accessibility/' '/certificates/' '/builder/' '/creator-dashboard/' '/creator-dashboard/github-connect.html' '/preview/' '/qa/link-checklist.html' '/qa/launch-checklist.html'; do
+            grep -q "$path" sitemap.xml || { echo "Missing sitemap URL: $path"; exit 1; }
           done
           echo 'Sitemap checks passed'
