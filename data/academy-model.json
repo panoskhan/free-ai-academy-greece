@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Free AI Academy Greece Multi-Academy Model",
+  "type": "object",
+  "required": ["version", "academies"],
+  "properties": {
+    "version": {"type": "string"},
+    "academies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "status", "branding", "courses", "projects", "release"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "name": {"type": "string", "minLength": 1},
+          "status": {"enum": ["draft", "qa", "preview", "published", "archived"]},
+          "branding": {
+            "type": "object",
+            "properties": {
+              "primaryColor": {"type": "string"},
+              "language": {"type": "string"},
+              "logoUrl": {"type": ["string", "null"]}
+            }
+          },
+          "courses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "title", "lessons", "quizzes"],
+              "properties": {
+                "id": {"type": "string"},
+                "title": {"type": "string"},
+                "lessons": {"type": "array", "items": {"type": "string"}},
+                "quizzes": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "title", "requirements"],
+              "properties": {
+                "id": {"type": "string"},
+                "title": {"type": "string"},
+                "requirements": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          },
+          "release": {
+            "type": "object",
+            "required": ["stage", "qaPassed"],
+            "properties": {
+              "stage": {"enum": ["draft", "testing", "preview", "production"]},
+              "qaPassed": {"type": "boolean"},
+              "repository": {"type": ["string", "null"]},
+              "commitSha": {"type": ["string", "null"]},
+              "previewUrl": {"type": ["string", "null"]}
+            }
+          }
+        }
+      }
+    }
+  }
+}
