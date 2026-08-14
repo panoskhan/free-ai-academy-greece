@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://panoskhan.github.io/free-ai-academy-greece/sitemap.xml
