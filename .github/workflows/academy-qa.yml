@@ -15,7 +15,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          files=(index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html student-path/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html builder/index.html sitemap.xml robots.txt)
+          files=(index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html student-path/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html builder/index.html creator-dashboard/index.html creator-dashboard/github-connect.html preview/index.html qa/link-checklist.html qa/launch-checklist.html sitemap.xml robots.txt)
           for f in "${files[@]}"; do test -f "$f" || { echo "Missing: $f"; exit 1; }; done
           echo "Core files present: ${#files[@]}"
       - name: Check HTML basics
@@ -37,8 +37,7 @@ jobs:
           python3 - <<'PY'
           import re
           from pathlib import Path
-          root=Path('.')
-          html_files=list(root.rglob('*.html'))
+          html_files=list(Path('.').rglob('*.html'))
           bad=[]
           for f in html_files:
               text=f.read_text(encoding='utf-8',errors='ignore')
@@ -48,7 +47,7 @@ jobs:
                   if not p.exists(): bad.append((str(f),target))
           if bad:
               print('Broken local links:')
-              for x in bad: print(x[0], '->', x[1])
+              for source,target in bad: print(source, '->', target)
               raise SystemExit(1)
           print(f'Checked local links in {len(html_files)} HTML files')
           PY
@@ -63,16 +62,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'sandbox="allow-scripts"' builder/index.html
           grep -q 'downloadProject' builder/index.html
           grep -q 'runTests' builder/index.html
+          grep -q 'does not execute arbitrary user code' builder/index.html
           echo 'Builder preview/export/test controls present'
       - name: Sitemap checks
         shell: bash
         run: |
           set -euo pipefail
           grep -q '<urlset' sitemap.xml
-          grep -q 'student-path/index.html' sitemap.xml
-          grep -q 'projects/index.html' sitemap.xml
-          grep -q 'builder/index.html' sitemap.xml
+          for path in student-path/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html builder/index.html creator-dashboard/index.html creator-dashboard/github-connect.html preview/index.html qa/link-checklist.html qa/launch-checklist.html; do
+            grep -q "$path" sitemap.xml || { echo "Missing sitemap entry: $path"; exit 1; }
+          done
           echo 'Sitemap checks passed'
