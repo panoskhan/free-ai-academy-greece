@@ -8,53 +8,53 @@ A free, Greek-first practical academy for learning AI by building real, portable
 
 Help people in Greece understand AI, build useful tools, test their work responsibly, and leave with projects they can run, publish, or self-host themselves.
 
-## What makes it different
+## Current platform
 
-- 🆓 Free core learning
-- 🇬🇷 Greek-first explanations
-- 🧪 Practical browser-friendly labs
-- 💻 Real projects rather than passive lessons
-- 📦 Downloadable, portable source code
-- 🐙 GitHub-ready projects
-- 🌐 Self-hosting and deployment guides
-- 🧠 AI verification and responsible-use training
-- 🎓 Transparent completion certificates
-- 🔐 Privacy-first design
-- ♿ Accessibility-first approach
-- 📚 Public curriculum and source transparency
+- 🏠 Greek-first responsive homepage
+- 🎓 Six-course core curriculum
+- 🧪 Practical labs and project deliverables
+- 🗺️ A–Z learning roadmap
+- 🛠️ Project Studio with beginner-to-final-project ideas
+- 📈 Local student progress dashboard
+- 🏆 Certificate verification foundation
+- 🐙 GitHub and self-hosting education
+- 🔎 SEO sitemap and robots.txt
+- 📱 Installable web-app manifest foundation
+- ♿ Accessibility and responsible-AI principles
+- 🔐 Privacy-first, no-secret-in-browser guidance
 - 🚫 No fake accreditation or invented credentials
 
-## Learning path
+## Core curriculum
 
-1. AI foundations
-2. Generative AI
-3. Prompt engineering
-4. AI limitations, verification and safety
-5. HTML, CSS and JavaScript foundations
-6. APIs and JSON
-7. Build your first AI web tool
-8. GitHub and version control
-9. Testing, accessibility and security
-10. Deployment and self-hosting
-11. Advanced AI application patterns
-12. Final practical project
+1. AI Foundations
+2. Prompt Engineering
+3. Web Foundations
+4. Build Your First AI Tool
+5. GitHub & Self-Hosting
+6. Responsible AI
 
-## Practical Lab
+## Learning philosophy
 
-Each major course should contain an exercise that can be completed in the browser or through a downloadable starter project. Learners should be able to inspect and understand the source code and continue developing it outside the academy.
+**Learn → Quiz → Build → Test → Document → Publish.**
 
-## Take My Project
-
-Finished projects should be exportable as ordinary source files and documented for GitHub Pages, static hosting, and self-hosting. The academy should never require learners to stay on the platform to keep using their work.
+The goal is demonstrable ability, not passive completion. Learners should leave with ordinary source files they can inspect, modify, export, publish, or self-host.
 
 ## Certificates
 
-The academy can issue a **Certificate of Completion / Βεβαίωση Ολοκλήρωσης** when published course requirements are met. A certificate is an educational record issued by this project; it must not be represented as a government, university, regulated-profession or accredited qualification unless formal recognition is obtained.
+The Academy may issue a **Certificate of Completion / Βεβαίωση Ολοκλήρωσης** when published requirements are met. This is an educational record issued by the project and must not be represented as a government, university, regulated-profession, or accredited qualification unless formal recognition is obtained.
 
 ## Trust standard
 
-AI-generated educational material is not automatically treated as correct. Published lessons should be reviewed, sources identified where appropriate, uncertainty disclosed, and factual claims checked before release.
+AI-generated educational material is not automatically treated as correct. Published lessons should be reviewed, sources identified where appropriate, uncertainty disclosed, and important factual claims checked before release.
+
+## Privacy standard
+
+The current student dashboard stores progress locally in the learner's browser. Learners should never place secrets, passwords, or sensitive personal data into public repositories or untrusted AI prompts.
+
+## Project identity
+
+The project may be presented as an independent open-source initiative of **Panos Khan Foundation**, subject to the foundation's official naming and governance decisions.
 
 ## Status
 
-Foundation release. The project is intentionally open-source so learners and educators can inspect the curriculum, exercises, source material and quality standards.
+**Active foundation release.** The core learning experience is implemented; the next engineering phase is platform-wide QA, deeper project labs, assessment/certificate workflows, accessibility refinement, and deployment verification.
