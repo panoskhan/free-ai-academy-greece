@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Free AI Academy Website Project",
+  "type": "object",
+  "required": ["project", "pages", "release"],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "language", "status", "updatedAt"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "language": {"type": "string"},
+        "status": {"enum": ["draft", "testing", "preview", "production"]},
+        "updatedAt": {"type": "string"}
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "slug", "title", "sections"],
+        "properties": {
+          "id": {"type": "string"},
+          "slug": {"type": "string"},
+          "title": {"type": "string"},
+          "sections": {"type": "array"}
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "required": ["version", "qa", "preview", "deployment"],
+      "properties": {
+        "version": {"type": "string"},
+        "qa": {"enum": ["pending", "passed", "failed"]},
+        "preview": {"enum": ["not-ready", "ready", "reviewed"]},
+        "deployment": {"enum": ["not-configured", "pending", "deployed", "failed"]}
+      }
+    }
+  }
+}
