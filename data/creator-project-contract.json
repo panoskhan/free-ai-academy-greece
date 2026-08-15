@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "name": "Creator Project Contract",
+  "purpose": "Shared handoff contract between Creator Workspace, Academy Builder and Website Builder.",
+  "project": {
+    "required": ["id", "type", "name", "status", "version"],
+    "types": ["academy", "website"],
+    "statuses": ["draft", "testing", "preview", "production"],
+    "qa": ["not-run", "passed", "failed"],
+    "preview": ["not-ready", "ready"],
+    "deployment": ["not-configured", "ready", "deployed"]
+  },
+  "handoff": {
+    "creatorWorkspace": "creates and selects the project",
+    "builder": "reads the selected project context and writes changes back to the project model",
+    "projectControl": "validates versions and release gates",
+    "release": "requires verified QA and real deployment evidence"
+  },
+  "security": {
+    "localPrototypeStorage": true,
+    "arbitraryCodeExecution": false,
+    "githubCredentialsInBrowser": false
+  }
+}
