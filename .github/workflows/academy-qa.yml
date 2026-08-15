@@ -15,8 +15,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          files=(index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html student-path/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html builder/index.html creator-dashboard/index.html creator-dashboard/github-connect.html preview/index.html qa/link-checklist.html qa/launch-checklist.html sitemap.xml robots.txt 404.html)
+          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html student-path/index.html student-dashboard/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html qa/smoke-test.py sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json)
           for f in "${files[@]}"; do test -f "$f" || { echo "Missing: $f"; exit 1; }; done
+          echo "Core files present: ${#files[@]}"
       - name: Check HTML basics
         shell: bash
         run: |
@@ -27,8 +28,13 @@ jobs:
             grep -qi 'lang="el"' "$f" || { echo "Missing Greek lang: $f"; bad=1; }
             grep -qi '<meta charset=' "$f" || { echo "Missing charset: $f"; bad=1; }
             grep -qi 'name="viewport"' "$f" || { echo "Missing viewport: $f"; bad=1; }
+            grep -qi '<title>' "$f" || { echo "Missing title: $f"; bad=1; }
+            grep -qi 'name="description"' "$f" || { echo "Missing meta description: $f"; bad=1; }
           done < <(find . -name '*.html' -not -path './.git/*' -print0)
           test "$bad" -eq 0
+      - name: Full A-to-Z static smoke test
+        shell: bash
+        run: python3 qa/smoke-test.py
       - name: Check navigation targets
         shell: bash
         run: |
@@ -41,18 +47,23 @@ jobs:
           for f in html_files:
               text=f.read_text(encoding='utf-8',errors='ignore')
               for target in re.findall(r'href=["\']([^"\'#?]+)', text):
-                  if target.startswith(('http://','https://','mailto:','javascript:')): continue
-                  if not (f.parent/target).resolve().exists(): bad.append((str(f),target))
+                  if target.startswith(('http://','https://','mailto:','tel:','javascript:')): continue
+                  p=(f.parent/target).resolve()
+                  if p.is_dir(): p=p/'index.html'
+                  if not p.exists(): bad.append((str(f),target))
           if bad:
               print('Broken local links:')
-              for source,target in bad: print(source,'->',target)
+              for x in bad: print(x[0], '->', x[1])
               raise SystemExit(1)
+          print(f'Checked local links in {len(html_files)} HTML files')
           PY
       - name: Check for obvious secret patterns
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE --exclude-dir=.git --exclude='*.md' '(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{20,}|BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY)' .; then exit 1; fi
+          if grep -RInE --exclude-dir=.git --exclude='*.md' '(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{20,}|BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY)' .; then
+            echo 'Potential secret detected'; exit 1
+          fi
       - name: Builder safety checks
         shell: bash
         run: |
@@ -60,18 +71,55 @@ jobs:
           grep -q 'downloadProject' builder/index.html
           grep -q 'runTests' builder/index.html
           grep -q 'arbitrary user code' builder/index.html
+          echo 'Builder safety markers present'
       - name: Sitemap checks
         shell: bash
         run: |
           set -euo pipefail
           grep -q '<urlset' sitemap.xml
-          for path in '/student-path/' '/projects/' '/assessment/' '/accessibility/' '/certificates/' '/builder/' '/creator-dashboard/' '/creator-dashboard/github-connect.html' '/preview/' '/qa/link-checklist.html' '/qa/launch-checklist.html'; do grep -q "$path" sitemap.xml || exit 1; done
-      - name: Verify published GitHub Pages
+          for path in '/student-path/' '/student-dashboard/' '/projects/' '/assessment/' '/accessibility/' '/certificates/' '/contact/' '/privacy/' '/terms/' '/builder/' '/creator-dashboard/' '/creator-dashboard/workspace.html' '/creator-dashboard/academy-editor.html' '/creator-dashboard/github-connect.html' '/preview/' '/release-center/' '/release-center/history.html' '/release-center/audit-log.html' '/qa/link-checklist.html' '/qa/launch-checklist.html'; do grep -q "$path" sitemap.xml || { echo "Missing sitemap entry: $path"; exit 1; }; done
+          echo 'Sitemap structure passed'
+      - name: Verify every published sitemap URL
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import time
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          root=ET.parse('sitemap.xml').getroot()
+          ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text]
+          failed=[]
+          for url in urls:
+              ok=False
+              last=''
+              for attempt in range(1,4):
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'Free-AI-Academy-QA/1.0'})
+                      with urllib.request.urlopen(req,timeout=20) as r:
+                          code=r.status
+                          body=r.read(4096).lower()
+                      if code == 200 and b'<html' in body:
+                          ok=True
+                          break
+                      last=f'HTTP {code}'
+                  except Exception as exc:
+                      last=str(exc)
+                  time.sleep(3)
+              if not ok: failed.append((url,last))
+          print(f'Published sitemap URLs verified: {len(urls)}')
+          if failed:
+              for url,reason in failed: print('FAILED',url,reason)
+              raise SystemExit(1)
+          print('Every sitemap URL returned HTTP 200 HTML')
+          PY
+      - name: Verify published GitHub Pages smoke routes
         shell: bash
         run: |
           set -euo pipefail
           base='https://panoskhan.github.io/free-ai-academy-greece'
-          for path in '/' '/courses/' '/student-dashboard/' '/builder/' '/creator-dashboard/' '/preview/'; do
+          for path in '/' '/courses/' '/student-dashboard/' '/builder/' '/creator-dashboard/' '/preview/' '/release-center/' '/release-center/audit-log.html'; do
             ok=0
             for attempt in 1 2 3 4 5; do
               code=$(curl -L -sS -o /tmp/page.html -w '%{http_code}' "$base$path" || true)
@@ -81,4 +129,4 @@ jobs:
             test "$ok" -eq 1 || { echo "Published page failed: $path HTTP $code"; exit 1; }
             grep -qi '<html' /tmp/page.html
           done
-          echo 'Published GitHub Pages verification passed'
+          echo 'Published GitHub Pages smoke routes passed'
