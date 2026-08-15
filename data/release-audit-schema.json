@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "description": "Machine-readable audit event contract for future server-backed Academy releases.",
+  "eventTypes": [
+    "RELEASE_CREATED",
+    "QA_PASSED",
+    "PREVIEW_REVIEWED",
+    "PRODUCTION_APPROVED",
+    "DEPLOYED",
+    "DEPLOY_FAILED",
+    "ROLLBACK_REQUESTED",
+    "ROLLBACK_COMPLETED"
+  ],
+  "requiredFields": [
+    "eventId",
+    "timestamp",
+    "actor",
+    "academyId",
+    "releaseId",
+    "repository",
+    "commitSha",
+    "environment",
+    "result"
+  ],
+  "optionalFields": [
+    "qaRunId",
+    "previewUrl",
+    "productionUrl",
+    "deploymentId",
+    "rollbackFromReleaseId",
+    "metadata"
+  ],
+  "resultValues": ["pending", "success", "failed", "cancelled"],
+  "principles": [
+    "Never treat client-side UI state as deployment evidence.",
+    "Do not store passwords, access tokens or private credentials in audit events.",
+    "Production success requires a provider-verifiable deployment result.",
+    "Rollback events must identify the known-good target release.",
+    "Audit records should be append-oriented and traceable to immutable commit identifiers."
+  ],
+  "example": {
+    "eventId": "evt_example_001",
+    "timestamp": "2026-08-15T00:00:00Z",
+    "actor": "creator@example",
+    "academyId": "faa-greece",
+    "releaseId": "rel_example_001",
+    "repository": "owner/example-academy",
+    "commitSha": "example-commit-sha",
+    "environment": "preview",
+    "result": "success",
+    "qaRunId": "qa-example-001",
+    "previewUrl": "https://example.invalid/preview"
+  }
+}
