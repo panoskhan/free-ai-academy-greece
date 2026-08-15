@@ -15,7 +15,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html student-path/index.html student-dashboard/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html qa/smoke-test.py sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json)
+          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html lessons/ai-foundations.html student-path/index.html student-dashboard/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html website-builder/index.html sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json)
           for f in "${files[@]}"; do test -f "$f" || { echo "Missing: $f"; exit 1; }; done
           echo "Core files present: ${#files[@]}"
       - name: Check HTML basics
@@ -32,6 +32,24 @@ jobs:
             grep -qi 'name="description"' "$f" || { echo "Missing meta description: $f"; bad=1; }
           done < <(find . -name '*.html' -not -path './.git/*' -print0)
           test "$bad" -eq 0
+      - name: Validate JSON data contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=['data/academy-model.json','data/example-academy.json','data/release-audit-schema.json','data/website-project-model.json']
+          for name in files:
+              obj=json.loads(Path(name).read_text(encoding='utf-8'))
+              assert isinstance(obj,(dict,list)), name
+              print('JSON OK:',name)
+          model=json.loads(Path('data/website-project-model.json').read_text(encoding='utf-8'))
+          text=json.dumps(model).lower()
+          for required in ('pages','sections','versions','status','qa','preview','deployment'):
+              assert required in text, f'Website model missing {required}'
+          print('Website project model contract passed')
+          PY
       - name: Full A-to-Z static smoke test
         shell: bash
         run: python3 qa/smoke-test.py
@@ -57,6 +75,15 @@ jobs:
               raise SystemExit(1)
           print(f'Checked local links in {len(html_files)} HTML files')
           PY
+      - name: Website Builder functional markers
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=website-builder/index.html
+          for marker in 'Live Website Preview' 'Automated Website Tests' 'Export Website' 'function render' 'function runTests' 'function exportSite'; do
+            grep -q "$marker" "$file" || { echo "Website Builder missing marker: $marker"; exit 1; }
+          done
+          echo 'Website Builder functional markers passed'
       - name: Check for obvious secret patterns
         shell: bash
         run: |
@@ -77,7 +104,7 @@ jobs:
         run: |
           set -euo pipefail
           grep -q '<urlset' sitemap.xml
-          for path in '/student-path/' '/student-dashboard/' '/projects/' '/assessment/' '/accessibility/' '/certificates/' '/contact/' '/privacy/' '/terms/' '/builder/' '/creator-dashboard/' '/creator-dashboard/workspace.html' '/creator-dashboard/academy-editor.html' '/creator-dashboard/github-connect.html' '/preview/' '/release-center/' '/release-center/history.html' '/release-center/audit-log.html' '/qa/link-checklist.html' '/qa/launch-checklist.html'; do grep -q "$path" sitemap.xml || { echo "Missing sitemap entry: $path"; exit 1; }; done
+          for path in '/student-path/' '/student-dashboard/' '/projects/' '/assessment/' '/accessibility/' '/certificates/' '/contact/' '/privacy/' '/terms/' '/builder/' '/creator-dashboard/' '/creator-dashboard/workspace.html' '/creator-dashboard/academy-manager.html' '/creator-dashboard/academy-editor.html' '/creator-dashboard/github-connect.html' '/creator-dashboard/deployment-dashboard.html' '/creator-dashboard/website-project.html' '/preview/' '/release-center/' '/release-center/history.html' '/release-center/audit-log.html' '/qa/link-checklist.html' '/qa/launch-checklist.html' '/website-builder/'; do grep -q "$path" sitemap.xml || { echo "Missing sitemap entry: $path"; exit 1; }; done
           echo 'Sitemap structure passed'
       - name: Verify every published sitemap URL
         shell: bash
@@ -119,7 +146,7 @@ jobs:
         run: |
           set -euo pipefail
           base='https://panoskhan.github.io/free-ai-academy-greece'
-          for path in '/' '/courses/' '/student-dashboard/' '/builder/' '/creator-dashboard/' '/preview/' '/release-center/' '/release-center/audit-log.html'; do
+          for path in '/' '/courses/' '/student-dashboard/' '/builder/' '/creator-dashboard/' '/creator-dashboard/deployment-dashboard.html' '/creator-dashboard/website-project.html' '/preview/' '/release-center/' '/release-center/audit-log.html' '/website-builder/'; do
             ok=0
             for attempt in 1 2 3 4 5; do
               code=$(curl -L -sS -o /tmp/page.html -w '%{http_code}' "$base$path" || true)
