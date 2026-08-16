@@ -95,10 +95,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'downloadProject' builder/index.html
-          grep -q 'runTests' builder/index.html
-          grep -q 'arbitrary user code' builder/index.html
-          echo 'Builder safety markers present'
+          file=builder/index.html
+          grep -q 'downloadProject\|downloadProject' "$file"
+          grep -q 'runTests' "$file"
+          grep -q 'arbitrary user code' "$file"
+          grep -q 'textContent\|esc(' "$file"
+          if grep -Eq 'innerHTML[[:space:]]*=[[:space:]]*[^;]*(project|user|input|value)' "$file"; then
+            echo 'Potential unsafe direct HTML interpolation detected in Builder'; exit 1
+          fi
+          echo 'Builder safety markers and output-boundary checks passed'
       - name: Sitemap checks
         shell: bash
         run: |
