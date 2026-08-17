@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://panoskhan.github.io/free-ai-academy-greece/data/assessment-record-schema.json",
+  "title": "Free AI Academy Assessment Record",
+  "type": "object",
+  "required": ["schema", "exportedAt", "project", "checks", "scores", "readiness"],
+  "properties": {
+    "schema": { "const": "faa-assessment-record/v2" },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "project": {
+      "type": "object",
+      "required": ["name", "url", "summary", "evidence"],
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "summary": { "type": "string" },
+        "evidence": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": { "type": "boolean" }
+    },
+    "scores": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": { "type": "number", "minimum": 0 }
+    },
+    "updatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "readiness": {
+      "type": "object",
+      "required": ["checksComplete", "score"],
+      "properties": {
+        "checksComplete": { "type": "boolean" },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
