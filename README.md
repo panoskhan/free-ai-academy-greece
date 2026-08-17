@@ -18,6 +18,9 @@ Help people in Greece understand AI, build useful tools, test their work respons
 - 📈 Local student progress dashboard
 - 🏆 Certificate verification foundation
 - 🐙 GitHub and self-hosting education
+- 🛠️ Website Builder with local persistence, live preview, tests, versions and standalone export
+- 🎛️ Creator Workspace connecting website and academy project flows
+- 🚦 Release Center with explicit QA/preview/production boundaries
 - 🔎 SEO sitemap and robots.txt
 - 📱 Installable web-app manifest foundation
 - ♿ Accessibility and responsible-AI principles
@@ -55,6 +58,8 @@ The current student dashboard stores progress locally in the learner's browser. 
 
 The project may be presented as an independent open-source initiative of **Panos Khan Foundation**, subject to the foundation's official naming and governance decisions.
 
-## Status
+## QA and release status
 
-**Active foundation release.** The core learning experience is implemented; the next engineering phase is platform-wide QA, deeper project labs, assessment/certificate workflows, accessibility refinement, and deployment verification.
+**Active foundation release with green repository QA.** The Academy's CI validates core files, HTML metadata, JSON contracts, end-to-end static smoke tests, local navigation, builder safety, sitemap structure, published sitemap URLs, and published GitHub Pages smoke routes. The Website Builder and Academy Builder remain browser-first prototypes: authenticated GitHub repository creation and production deployment still require a real backend/deployment integration and are never falsely reported as complete.
+
+The public QA and launch checklists now persist human-review progress locally and can export their review status for release records.
