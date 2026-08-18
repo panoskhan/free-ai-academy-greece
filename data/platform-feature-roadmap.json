@@ -1,0 +1,36 @@
+{
+  "id": "faa-platform-feature-roadmap/v1",
+  "title": "Academy Creator Platform Feature Roadmap",
+  "principle": "Build → QA → Publish → Verify → Fix → Next",
+  "vision": "A free platform where creators can build practical AI academies, courses and websites, preview them, test them, export them, connect their own GitHub and eventually deploy white-label projects.",
+  "features": [
+    {"id":"academy-builder","name":"Academy Builder","status":"active"},
+    {"id":"course-builder","name":"Course Builder","status":"active"},
+    {"id":"lesson-builder","name":"Lesson Builder","status":"active"},
+    {"id":"quiz-builder","name":"Quiz Builder","status":"active"},
+    {"id":"project-builder","name":"Practical Project Builder","status":"active"},
+    {"id":"website-builder","name":"Website Builder","status":"active"},
+    {"id":"live-preview","name":"Safe Live Preview","status":"active"},
+    {"id":"automated-tests","name":"Automated Static QA","status":"active"},
+    {"id":"version-history","name":"Version History","status":"active"},
+    {"id":"assessment-evidence","name":"Assessment + Evidence","status":"active"},
+    {"id":"github-integration","name":"GitHub Connect / Repository Handoff","status":"next"},
+    {"id":"preview-deployments","name":"Preview Deployments","status":"planned"},
+    {"id":"release-center","name":"Release Center","status":"active"},
+    {"id":"white-label","name":"White-Label Branding","status":"planned"},
+    {"id":"templates","name":"Reusable Academy / Website Templates","status":"planned"},
+    {"id":"collaboration","name":"Creator Collaboration + Roles","status":"planned"},
+    {"id":"analytics","name":"Privacy-Friendly Learning Analytics","status":"planned"},
+    {"id":"accessibility","name":"Accessibility Audit + Guidance","status":"active"},
+    {"id":"localization","name":"Multilingual Academy Support","status":"planned"},
+    {"id":"import-export","name":"Portable Project Import / Export","status":"active"},
+    {"id":"marketplace","name":"Community Template Library","status":"future"},
+    {"id":"custom-domain","name":"Custom Domain Guidance / Handoff","status":"future"}
+  ],
+  "safetyBoundary": {
+    "browser": ["safe rendering", "static validation", "local persistence", "portable export"],
+    "serverRequired": ["authenticated GitHub operations", "secret storage", "build execution", "deployment credentials"],
+    "neverInBrowser": ["private tokens", "arbitrary server code execution"]
+  },
+  "definitionOfDone": ["feature built", "automated QA passed", "published route verified", "release evidence recorded"]
+}
