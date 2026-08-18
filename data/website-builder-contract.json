@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "faa-website-builder-contract/v1",
+  "title": "Free AI Academy Website Builder Contract",
+  "description": "Portable contract mapping Website Builder state into the shared creator project lifecycle.",
+  "type": "object",
+  "required": ["project", "website", "release"],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": ["id", "type", "name", "version", "status"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"const": "website"},
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "integer", "minimum": 1},
+        "status": {"enum": ["draft", "testing", "preview", "production"]}
+      }
+    },
+    "website": {
+      "type": "object",
+      "required": ["pages", "design", "content", "seo"],
+      "properties": {
+        "pages": {"type": "object"},
+        "design": {"type": "object"},
+        "content": {"type": "object"},
+        "seo": {"type": "object"}
+      }
+    },
+    "release": {
+      "type": "object",
+      "required": ["qa", "preview", "deployment"],
+      "properties": {
+        "qa": {"enum": ["not-run", "passed", "failed"]},
+        "preview": {"enum": ["not-ready", "ready"]},
+        "deployment": {"enum": ["not-configured", "ready", "deployed"]}
+      }
+    }
+  },
+  "lifecycle": ["draft", "testing", "preview", "production"],
+  "browserBoundary": {
+    "allowed": ["localStorage", "safe-preview", "static-tests", "standalone-export"],
+    "notProvided": ["arbitrary-code-execution", "server-side-secret-storage", "authenticated-github-token-storage", "production-deployment"]
+  }
+}
