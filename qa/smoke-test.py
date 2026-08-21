@@ -64,15 +64,18 @@ def fail(errors, message):
 
 
 def resolve_local(source: Path, target: str):
-    target = target.split("?", 1)[0]
-    if target.startswith("#"):
-        return source, target[1:]
-    if target.startswith("/"):
-        if target.startswith(BASE_PATH):
-            target = target[len(BASE_PATH):] or "/"
-        path = ROOT / target.lstrip("/")
+    """Resolve a local URL while preserving its fragment for anchor validation."""
+    parsed = urlparse(target)
+    path_target = parsed.path
+    fragment = parsed.fragment or None
+    if not path_target:
+        return source, fragment
+    if path_target.startswith("/"):
+        if path_target.startswith(BASE_PATH):
+            path_target = path_target[len(BASE_PATH):] or "/"
+        path = ROOT / path_target.lstrip("/")
     else:
-        path = source.parent / target
+        path = source.parent / path_target
     path = path.resolve()
     try:
         path.relative_to(ROOT.resolve())
@@ -80,7 +83,7 @@ def resolve_local(source: Path, target: str):
         return None, None
     if path.is_dir():
         path = path / "index.html"
-    return path, None
+    return path, fragment
 
 
 def main():
@@ -101,7 +104,6 @@ def main():
         relative = page.relative_to(ROOT)
         if not re.search(r"<!doctype\s+html", text, re.I):
             fail(errors, f"Missing doctype: {relative}")
-        # 404 is still a real HTML document and should be accessible/consistent.
         lang = re.search(r'<html[^>]*\blang=["\']([^"\']+)', text, re.I)
         if not lang or lang.group(1).lower() != "el":
             fail(errors, f'Missing lang="el": {relative}')
@@ -128,11 +130,16 @@ def main():
                 continue
             if not local.exists():
                 fail(errors, f"Broken local {tag} {attr}: {relative} -> {target}")
-            if fragment and local == page and fragment not in parser.ids:
-                fail(errors, f"Broken anchor: {relative} -> #{fragment}")
+            if fragment:
+                target_parser = page_data.get(local)
+                if target_parser is None and local.exists() and local.suffix.lower() == ".html":
+                    target_parser = PageParser()
+                    target_parser.feed(local.read_text(encoding="utf-8", errors="strict"))
+                    page_data[local] = target_parser
+                if target_parser and fragment not in target_parser.ids:
+                    fail(errors, f"Broken anchor: {relative} -> {target}")
         page_data[page] = parser
 
-    # JSON syntax + minimum model consistency checks.
     for path in sorted(ROOT.rglob("*.json")):
         if ".git" in path.parts:
             continue
@@ -152,7 +159,6 @@ def main():
                 if academy.get("release", {}).get("qaPassed") is not True:
                     fail(errors, "example-academy.json release.qaPassed is not true")
 
-    # Sitemap XML + every URL must map to an existing repository page.
     sitemap = ROOT / "sitemap.xml"
     try:
         tree = ET.parse(sitemap)
@@ -181,13 +187,11 @@ def main():
     except Exception as exc:
         fail(errors, f"Invalid sitemap.xml: {exc}")
 
-    # robots.txt should expose the same sitemap.
     robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
     expected_sitemap = SITE_ORIGIN + BASE_PATH + "/sitemap.xml"
     if expected_sitemap not in robots:
         fail(errors, "robots.txt does not reference the canonical sitemap")
 
-    # PWA manifest must parse and point to a real start page.
     manifest = ROOT / "manifest.webmanifest"
     try:
         obj = json.loads(manifest.read_text(encoding="utf-8"))
