@@ -15,7 +15,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html lessons/ai-foundations.html student-path/index.html student-dashboard/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html website-builder/index.html website-builder/contract-bridge.js sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/website-builder-contract.json)
+          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html lessons/ai-foundations.html student-path/index.html student-dashboard/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js website-builder/index.html website-builder/contract-bridge.js sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/website-builder-contract.json)
           for f in "${files[@]}"; do test -f "$f" || { echo "Missing: $f"; exit 1; }; done
           echo "Core files present: ${#files[@]}"
       - name: Check HTML basics
@@ -70,8 +70,10 @@ jobs:
           grep -q 'function validate' website-builder/contract-bridge.js
           grep -q 'function readiness' website-builder/contract-bridge.js
           grep -q 'window.FAAWebsiteContract' website-builder/contract-bridge.js
-          grep -q 'arbitrary user code' website-builder/contract-bridge.js || true
           echo 'Website Builder contract bridge markers passed'
+      - name: Execute Website Builder contract bridge
+        shell: bash
+        run: node qa/website-builder-contract-test.js
       - name: Full A-to-Z static smoke test
         shell: bash
         run: python3 qa/smoke-test.py
