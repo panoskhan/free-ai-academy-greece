@@ -46,8 +46,7 @@ jobs:
               print('JSON OK:',name)
           model=json.loads(Path('data/website-project-model.json').read_text(encoding='utf-8'))
           text=json.dumps(model).lower()
-          for required in ('pages','sections','versions','status','qa','preview','deployment'):
-              assert required in text, f'Website model missing {required}'
+          for required in ('pages','sections','versions','status','qa','preview','deployment'): assert required in text, f'Website model missing {required}'
           assessment=json.loads(Path('data/assessment-record-schema.json').read_text(encoding='utf-8'))
           for key in ('schema','exportedAt','project','checks','scores','readiness'): assert key in assessment['required']
           assert assessment['properties']['schema']['const']=='faa-assessment-record/v2'
@@ -105,15 +104,16 @@ jobs:
               raise SystemExit(1)
           print(f'Checked local links in {len(html_files)} HTML files')
           PY
-      - name: Evidence Portfolio functional markers
+      - name: Evidence Portfolio functional and safety markers
         shell: bash
         run: |
           set -euo pipefail
           file=portfolio/index.html
-          for marker in 'EVIDENCE-FIRST LEARNING' 'faa-portfolio-v1' 'function removeRecord' 'exportRecord' 'Portfolio ≠ accreditation'; do
+          for marker in 'EVIDENCE-FIRST LEARNING' 'faa-portfolio-v1' 'function removeRecord' 'exportRecord' 'Portfolio ≠ accreditation' 'const safeUrl' 'new URL(s)' 'replaceChildren'; do
             grep -q "$marker" "$file" || { echo "Evidence Portfolio missing marker: $marker"; exit 1; }
           done
-          echo 'Evidence Portfolio functional markers passed'
+          if grep -Eq "innerHTML[[:space:]]*=.*r\.url" "$file"; then echo 'Unsafe portfolio URL interpolation detected'; exit 1; fi
+          echo 'Evidence Portfolio functional and URL-safety markers passed'
       - name: Website Builder functional markers
         shell: bash
         run: |
@@ -155,28 +155,18 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import time
-          import urllib.request
-          import xml.etree.ElementTree as ET
-          root=ET.parse('sitemap.xml').getroot()
-          ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'}
-          urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text]
-          failed=[]
+          import time, urllib.request, xml.etree.ElementTree as ET
+          root=ET.parse('sitemap.xml').getroot(); ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text]; failed=[]
           for url in urls:
-              ok=False
-              last=''
+              ok=False; last=''
               for attempt in range(1,4):
                   try:
                       req=urllib.request.Request(url,headers={'User-Agent':'Free-AI-Academy-QA/1.0'})
-                      with urllib.request.urlopen(req,timeout=20) as r:
-                          code=r.status
-                          body=r.read(4096).lower()
-                      if code == 200 and b'<html' in body:
-                          ok=True
-                          break
+                      with urllib.request.urlopen(req,timeout=20) as r: code=r.status; body=r.read(4096).lower()
+                      if code==200 and b'<html' in body: ok=True; break
                       last=f'HTTP {code}'
-                  except Exception as exc:
-                      last=str(exc)
+                  except Exception as exc: last=str(exc)
                   time.sleep(3)
               if not ok: failed.append((url,last))
           print(f'Published sitemap URLs verified: {len(urls)}')
