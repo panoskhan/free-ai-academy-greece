@@ -109,7 +109,7 @@ jobs:
         run: |
           set -euo pipefail
           file=portfolio/index.html
-          for marker in 'EVIDENCE-FIRST LEARNING' 'faa-portfolio-v1' 'function removeRecord' 'exportRecord' 'Portfolio ≠ accreditation' 'const safeUrl' 'new URL(s)' 'replaceChildren'; do
+          for marker in 'EVIDENCE-FIRST LEARNING' 'faa-portfolio-v1' 'function removeRecord' 'exportBtn' 'Portfolio ≠ accreditation' 'const safeUrl' 'new URL(s)' 'replaceChildren'; do
             grep -q "$marker" "$file" || { echo "Evidence Portfolio missing marker: $marker"; exit 1; }
           done
           if grep -Eq "innerHTML[[:space:]]*=.*r\.url" "$file"; then echo 'Unsafe portfolio URL interpolation detected'; exit 1; fi
