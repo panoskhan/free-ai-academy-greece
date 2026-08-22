@@ -16,6 +16,7 @@ Help people in Greece understand AI, build useful tools, test their work respons
 - 🗺️ A–Z learning roadmap
 - 🛠️ Project Studio with beginner-to-final-project ideas
 - 📈 Local student progress dashboard
+- 🧾 Evidence Portfolio with portable proof-of-work records
 - 🏆 Certificate verification foundation
 - 🐙 GitHub and self-hosting education
 - 🛠️ Website Builder with local persistence, live preview, tests, versions and standalone export
@@ -42,6 +43,10 @@ Help people in Greece understand AI, build useful tools, test their work respons
 
 The goal is demonstrable ability, not passive completion. Learners should leave with ordinary source files they can inspect, modify, export, publish, or self-host.
 
+## Evidence Portfolio
+
+The Evidence Portfolio turns learning into portable proof-of-work. Learners can record real projects, demos or repositories, testing and verification notes, documentation, responsible-AI evidence, delivery/self-hosting evidence, and reflections. Records are stored locally and can be exported as JSON. Portfolio evidence is not an accredited qualification or independent certification.
+
 ## Certificates
 
 The Academy may issue a **Certificate of Completion / Βεβαίωση Ολοκλήρωσης** when published requirements are met. This is an educational record issued by the project and must not be represented as a government, university, regulated-profession, or accredited qualification unless formal recognition is obtained.
@@ -52,7 +57,7 @@ AI-generated educational material is not automatically treated as correct. Publi
 
 ## Privacy standard
 
-The current student dashboard stores progress locally in the learner's browser. Learners should never place secrets, passwords, or sensitive personal data into public repositories or untrusted AI prompts.
+The current student dashboard and Evidence Portfolio store progress and records locally in the learner's browser. Learners should never place secrets, passwords, or sensitive personal data into public repositories or untrusted AI prompts.
 
 ## Project identity
 
@@ -60,6 +65,6 @@ The project may be presented as an independent open-source initiative of **Panos
 
 ## QA and release status
 
-**Active foundation release with green repository QA.** The Academy's CI validates core files, HTML metadata, JSON contracts, end-to-end static smoke tests, local navigation, builder safety, sitemap structure, published sitemap URLs, and published GitHub Pages smoke routes. The Website Builder and Academy Builder remain browser-first prototypes: authenticated GitHub repository creation and production deployment still require a real backend/deployment integration and are never falsely reported as complete.
+The repository contains an automated Academy QA workflow covering core files, HTML metadata, JSON contracts, end-to-end static smoke tests, local navigation, builder safety, portfolio safety, sitemap structure, published sitemap URLs, and published GitHub Pages smoke routes. The Website Builder and Academy Builder remain browser-first prototypes: authenticated GitHub repository creation and production deployment still require a real backend/deployment integration and are never falsely reported as complete.
 
-The public QA and launch checklists now persist human-review progress locally and can export their review status for release records.
+Public QA and launch checklists persist human-review progress locally and can export review status for release records. A feature is treated as released only after automated QA and applicable published-route verification provide evidence for the current commit.
