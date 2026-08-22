@@ -32,6 +32,7 @@ jobs:
             release-center/index.html release-center/history.html release-center/audit-log.html
             qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/smoke-test.py
             website-builder/index.html website-builder/project.html website-builder/contract-bridge.js
+            data/academy-store.js data/creator-workspace-store.js
             sitemap.xml robots.txt manifest.webmanifest 404.html
             data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/portfolio-record-schema.json data/website-builder-contract.json
           )
@@ -52,6 +53,19 @@ jobs:
             grep -qi 'name="description"' "$f" || { echo "Missing meta description: $f"; bad=1; }
           done < <(find . -name '*.html' -not -path './.git/*' -print0)
           test "$bad" -eq 0
+
+      - name: Check JavaScript and Python syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          js_count=0
+          while IFS= read -r -d '' f; do
+            node --check "$f"
+            js_count=$((js_count+1))
+          done < <(find . -name '*.js' -not -path './.git/*' -print0)
+          python3 -m py_compile qa/smoke-test.py
+          echo "JavaScript syntax OK: $js_count files"
+          echo "Python syntax OK"
 
       - name: Validate JSON and Website Builder contracts
         shell: bash
