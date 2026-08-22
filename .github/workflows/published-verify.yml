@@ -13,10 +13,14 @@ permissions:
 jobs:
   published-verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Wait for GitHub Pages propagation
+        shell: bash
+        run: sleep 90
 
       - name: Verify published GitHub Pages smoke routes
         shell: bash
@@ -44,15 +48,12 @@ jobs:
             code='000'
             for attempt in 1 2 3 4 5 6 7; do
               code=$(curl -L -sS --max-time 20 -o /tmp/page.html -w '%{http_code}' "$base$path" || true)
-              if [ "$code" = '200' ]; then ok=1; break; fi
+              if [ "$code" = '200' ] && grep -qi '<html' /tmp/page.html && grep -qi '<title>' /tmp/page.html; then ok=1; break; fi
               sleep 10
             done
             test "$ok" -eq 1 || { echo "Published page failed: $path HTTP $code"; exit 1; }
-            grep -qi '<html' /tmp/page.html || { echo "Not HTML: $path"; exit 1; }
-            grep -qi '<title>' /tmp/page.html || { echo "Missing title: $path"; exit 1; }
           done
 
-          # Verify that the newly released portfolio is not merely a stale/empty route.
           curl -L -fsS --max-time 20 "$base/portfolio/" -o /tmp/portfolio.html
           grep -qi 'Evidence Portfolio' /tmp/portfolio.html
           grep -qi 'Learn → Build → Test → Document → Publish → Reflect' /tmp/portfolio.html
