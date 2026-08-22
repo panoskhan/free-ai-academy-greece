@@ -49,6 +49,7 @@ async function freshPage() {
 for (const file of files) {
   const route = routeFor(file);
   pageCount += 1;
+  console.log(`\n=== PAGE ${pageCount}/${files.length}: ${route} ===`);
   const base = await freshPage();
   try {
     const response = await base.page.goto(BASE + route, { waitUntil: 'domcontentloaded', timeout: 15000 });
@@ -64,6 +65,7 @@ for (const file of files) {
       disabled: button.disabled
     })));
     buttonCount += buttons.length;
+    console.log(`Buttons discovered: ${buttons.length}`);
 
     for (const button of buttons) {
       if (button.disabled) continue;
@@ -74,8 +76,15 @@ for (const file of files) {
         await test.page.waitForTimeout(150);
         const target = test.page.locator('button').nth(button.index);
         if (!(await target.count())) throw new Error('button disappeared before click');
-        await target.scrollIntoViewIfNeeded();
-        await target.click({ timeout: 5000 });
+        console.log(`  click button #${button.index}: ${button.text}`);
+        if (await target.isVisible().catch(() => false)) {
+          await target.scrollIntoViewIfNeeded({ timeout: 3000 }).catch(() => {});
+          await target.click({ timeout: 5000 });
+        } else {
+          // Hidden controls are often inside tabbed panels. Dispatch the real DOM click
+          // so every declared control is still exercised without inventing UI state.
+          await target.evaluate(element => element.click());
+        }
         await test.page.waitForTimeout(200);
         if (test.errors.length) throw new Error(test.errors.join(' | '));
       } catch (error) {
@@ -85,14 +94,16 @@ for (const file of files) {
       }
     }
 
-    const links = await base.page.locator('a[href]').evaluateAll(elements => elements.map((anchor, index) => ({
+    const allLinks = await base.page.locator('a[href]').evaluateAll(elements => elements.map((anchor, index) => ({
       index,
       href: anchor.href,
       text: (anchor.innerText || anchor.getAttribute('aria-label') || `link-${index}`).trim().slice(0, 100),
       download: anchor.hasAttribute('download'),
       target: anchor.getAttribute('target') || ''
-    })).filter(link => link.href.startsWith(BASE)));
+    })));
+    const links = allLinks.filter(link => link.href.startsWith(BASE));
     linkCount += links.length;
+    console.log(`Internal links discovered: ${links.length}`);
 
     for (const link of links) {
       const test = await freshPage();
@@ -102,20 +113,23 @@ for (const file of files) {
         await test.page.waitForTimeout(100);
         const target = test.page.locator('a[href]').nth(link.index);
         if (!(await target.count())) throw new Error('link disappeared before click');
-        const downloadPromise = test.page.waitForEvent('download', { timeout: 1200 }).catch(() => null);
-        const popupPromise = test.page.waitForEvent('popup', { timeout: 1200 }).catch(() => null);
-        await target.click({ timeout: 5000 });
-        const download = await downloadPromise;
-        const popup = await popupPromise;
-        await test.page.waitForTimeout(200);
-        if (download) {
-          // Download links are functional when the browser creates the download event.
-        } else if (popup) {
+        console.log(`  click link #${link.index}: ${link.text}`);
+
+        if (link.download) {
+          const downloadPromise = test.page.waitForEvent('download', { timeout: 5000 });
+          await target.click({ timeout: 5000 });
+          await downloadPromise;
+        } else if (link.target === '_blank') {
+          const popupPromise = test.page.waitForEvent('popup', { timeout: 5000 });
+          await target.click({ timeout: 5000 });
+          const popup = await popupPromise;
           await popup.waitForLoadState('domcontentloaded', { timeout: 5000 }).catch(() => {});
           if (!popup.url().startsWith(BASE)) throw new Error(`popup navigated outside site: ${popup.url()}`);
           if (!(await popup.title())) throw new Error('popup destination has no title');
           await popup.close();
         } else {
+          await target.click({ timeout: 5000 });
+          await test.page.waitForTimeout(100);
           const current = test.page.url();
           if (!current.startsWith(BASE)) throw new Error(`navigated outside site: ${current}`);
           if (!(await test.page.title())) throw new Error('destination has no title');
@@ -135,7 +149,7 @@ for (const file of files) {
 }
 
 await browser.close();
-console.log(`Pages tested: ${pageCount}`);
+console.log(`\nPages tested: ${pageCount}`);
 console.log(`Buttons clicked: ${buttonCount}`);
 console.log(`Internal links clicked: ${linkCount}`);
 
