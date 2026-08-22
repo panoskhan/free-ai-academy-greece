@@ -149,14 +149,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q '<urlset' sitemap.xml
-          for path in '/student-path/' '/student-dashboard/' '/portfolio/' '/projects/' '/assessment/' '/accessibility/' '/certificates/' '/contact/' '/privacy/' '/terms/' '/builder/' '/creator-dashboard/' '/creator-dashboard/workspace.html' '/creator-dashboard/academy-manager.html' '/creator-dashboard/academy-editor.html' '/creator-dashboard/github-connect.html' '/creator-dashboard/deployment-dashboard.html' '/creator-dashboard/website-project.html' '/preview/' '/release-center/' '/release-center/history.html' '/release-center/audit-log.html' '/qa/link-checklist.html' '/qa/launch-checklist.html' '/website-builder/'; do grep -q "$path" sitemap.xml || { echo "Missing sitemap entry: $path"; exit 1; }; done
-          echo 'Sitemap structure passed'
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          sitemap=Path('sitemap.xml')
+          root=ET.parse(sitemap).getroot()
+          ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text and x.text.strip()]
+          assert root.tag.endswith('urlset'), 'Invalid sitemap root'
+          assert urls, 'Sitemap contains no URLs'
+          assert len(urls)==len(set(urls)), 'Sitemap contains duplicate URLs'
+          base='https://panoskhan.github.io/free-ai-academy-greece'
+          assert all(u.startswith(base+'/') or u==base+'/' for u in urls), 'Sitemap contains an unexpected URL origin'
+          required=['/student-path/','/student-dashboard/','/portfolio/','/projects/','/assessment/','/accessibility/','/certificates/','/contact/','/privacy/','/terms/','/builder/','/creator-dashboard/','/creator-dashboard/workspace.html','/creator-dashboard/academy-manager.html','/creator-dashboard/academy-editor.html','/creator-dashboard/github-connect.html','/creator-dashboard/deployment-dashboard.html','/creator-dashboard/website-project.html','/preview/','/release-center/','/release-center/history.html','/release-center/audit-log.html','/qa/link-checklist.html','/qa/launch-checklist.html','/website-builder/']
+          for path in required: assert base+path in urls, f'Missing sitemap entry: {path}'
+          print(f'Sitemap XML and URL set passed: {len(urls)} URLs')
+          PY
 
   published-verify:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Wait for GitHub Pages propagation
         shell: bash
         run: sleep 90
