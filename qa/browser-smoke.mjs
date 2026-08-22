@@ -106,21 +106,23 @@ for (const file of files) {
         await test.page.waitForTimeout(100);
         const target = test.page.locator('a[href]').nth(link.index);
         if (!(await target.count())) throw new Error('link disappeared before click');
-        const downloadPromise = test.page.waitForEvent('download', { timeout: 1200 }).catch(() => null);
-        const popupPromise = test.page.waitForEvent('popup', { timeout: 1200 }).catch(() => null);
         console.log(`  click link #${link.index}: ${link.text}`);
-        await target.click({ timeout: 5000 });
-        const download = await downloadPromise;
-        const popup = await popupPromise;
-        await test.page.waitForTimeout(200);
-        if (download) {
-          // Download links are functional when the browser creates the download event.
-        } else if (popup) {
+
+        if (link.download) {
+          const downloadPromise = test.page.waitForEvent('download', { timeout: 5000 });
+          await target.click({ timeout: 5000 });
+          await downloadPromise;
+        } else if (link.target === '_blank') {
+          const popupPromise = test.page.waitForEvent('popup', { timeout: 5000 });
+          await target.click({ timeout: 5000 });
+          const popup = await popupPromise;
           await popup.waitForLoadState('domcontentloaded', { timeout: 5000 }).catch(() => {});
           if (!popup.url().startsWith(BASE)) throw new Error(`popup navigated outside site: ${popup.url()}`);
           if (!(await popup.title())) throw new Error('popup destination has no title');
           await popup.close();
         } else {
+          await target.click({ timeout: 5000 });
+          await test.page.waitForTimeout(100);
           const current = test.page.url();
           if (!current.startsWith(BASE)) throw new Error(`navigated outside site: ${current}`);
           if (!(await test.page.title())) throw new Error('destination has no title');
