@@ -1,25 +1,43 @@
 name: Academy QA
+
 on:
   push:
   pull_request:
   workflow_dispatch:
   schedule:
     - cron: '17 */6 * * *'
+
 permissions:
   contents: read
+
 jobs:
   qa:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Validate core files
         shell: bash
         run: |
           set -euo pipefail
-          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html lessons/ai-foundations.html student-path/index.html student-dashboard/index.html portfolio/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js website-builder/index.html website-builder/contract-bridge.js sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/portfolio-record-schema.json data/website-builder-contract.json)
+          files=(
+            index.html about/index.html academy-standard/index.html
+            courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html
+            lessons/ai-foundations.html
+            student-path/index.html student-dashboard/index.html portfolio/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html
+            builder/index.html builder/project.html
+            creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html
+            preview/index.html
+            release-center/index.html release-center/history.html release-center/audit-log.html
+            qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/smoke-test.py
+            website-builder/index.html website-builder/project.html website-builder/contract-bridge.js
+            sitemap.xml robots.txt manifest.webmanifest 404.html
+            data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/portfolio-record-schema.json data/website-builder-contract.json
+          )
           for f in "${files[@]}"; do test -f "$f" || { echo "Missing: $f"; exit 1; }; done
           echo "Core files present: ${#files[@]}"
+
       - name: Check HTML basics
         shell: bash
         run: |
@@ -34,6 +52,7 @@ jobs:
             grep -qi 'name="description"' "$f" || { echo "Missing meta description: $f"; bad=1; }
           done < <(find . -name '*.html' -not -path './.git/*' -print0)
           test "$bad" -eq 0
+
       - name: Validate JSON and Website Builder contracts
         shell: bash
         run: |
@@ -68,6 +87,7 @@ jobs:
           print('Website project model contract passed')
           print('Website Builder contract passed')
           PY
+
       - name: Validate Website Builder contract bridge
         shell: bash
         run: |
@@ -78,12 +98,15 @@ jobs:
           grep -q 'function readiness' website-builder/contract-bridge.js
           grep -q 'window.FAAWebsiteContract' website-builder/contract-bridge.js
           echo 'Website Builder contract bridge markers passed'
+
       - name: Execute Website Builder contract bridge
         shell: bash
         run: node qa/website-builder-contract-test.js
+
       - name: Full A-to-Z static smoke test
         shell: bash
         run: python3 qa/smoke-test.py
+
       - name: Check navigation targets
         shell: bash
         run: |
@@ -106,6 +129,7 @@ jobs:
               raise SystemExit(1)
           print(f'Checked local links in {len(html_files)} HTML files')
           PY
+
       - name: Evidence Portfolio functional and safety markers
         shell: bash
         run: |
@@ -116,6 +140,7 @@ jobs:
           done
           if grep -Eq "innerHTML[[:space:]]*=.*r\.url" "$file"; then echo 'Unsafe portfolio URL interpolation detected'; exit 1; fi
           echo 'Evidence Portfolio functional and URL-safety markers passed'
+
       - name: Website Builder functional markers
         shell: bash
         run: |
@@ -125,6 +150,24 @@ jobs:
             grep -q "$marker" "$file" || { echo "Website Builder missing marker: $marker"; exit 1; }
           done
           echo 'Website Builder functional markers passed'
+
+      - name: Website Project runtime-safety markers
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=website-builder/project.html
+          grep -q 'function render' "$file"
+          grep -q 'function renderHistory' "$file"
+          grep -q 'getElementById' "$file"
+          grep -q 'replaceChildren' "$file"
+          if grep -Eq '\$\(.(fill|state|validationStatus|versionStatus|releaseStatus|history)' "$file"; then
+            echo 'Undefined $() DOM helper detected in Website Project'; exit 1
+          fi
+          if grep -Eq 'history.*innerHTML|innerHTML.*history' "$file"; then
+            echo 'Unsafe Website Project history rendering detected'; exit 1
+          fi
+          echo 'Website Project runtime-safety markers passed'
+
       - name: Check for obvious secret patterns
         shell: bash
         run: |
@@ -132,6 +175,7 @@ jobs:
           if grep -RInE --exclude-dir=.git --exclude='*.md' '(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{20,}|BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY)' .; then
             echo 'Potential secret detected'; exit 1
           fi
+
       - name: Builder safety checks
         shell: bash
         run: |
@@ -145,6 +189,7 @@ jobs:
             echo 'Potential unsafe direct HTML interpolation detected in Builder'; exit 1
           fi
           echo 'Builder safety markers and output-boundary checks passed'
+
       - name: Sitemap checks
         shell: bash
         run: |
@@ -161,8 +206,13 @@ jobs:
           assert len(urls)==len(set(urls)), 'Sitemap contains duplicate URLs'
           base='https://panoskhan.github.io/free-ai-academy-greece'
           assert all(u.startswith(base+'/') or u==base+'/' for u in urls), 'Sitemap contains an unexpected URL origin'
-          required=['/student-path/','/student-dashboard/','/portfolio/','/projects/','/assessment/','/accessibility/','/certificates/','/contact/','/privacy/','/terms/','/builder/','/creator-dashboard/','/creator-dashboard/workspace.html','/creator-dashboard/academy-manager.html','/creator-dashboard/academy-editor.html','/creator-dashboard/github-connect.html','/creator-dashboard/deployment-dashboard.html','/creator-dashboard/website-project.html','/preview/','/release-center/','/release-center/history.html','/release-center/audit-log.html','/qa/link-checklist.html','/qa/launch-checklist.html','/website-builder/']
+          required=['/about/','/academy-standard/','/student-path/','/student-dashboard/','/portfolio/','/projects/','/assessment/','/accessibility/','/certificates/','/contact/','/privacy/','/terms/','/builder/','/builder/project.html','/creator-dashboard/','/creator-dashboard/workspace.html','/creator-dashboard/academy-manager.html','/creator-dashboard/academy-editor.html','/creator-dashboard/github-connect.html','/creator-dashboard/deployment-dashboard.html','/creator-dashboard/website-project.html','/preview/','/release-center/','/release-center/history.html','/release-center/audit-log.html','/qa/link-checklist.html','/qa/launch-checklist.html','/website-builder/','/website-builder/project.html']
           for path in required: assert base+path in urls, f'Missing sitemap entry: {path}'
+          for url in urls:
+              path=url[len(base):].lstrip('/')
+              local=Path('index.html') if not path else Path(path)
+              if local.is_dir(): local=local/'index.html'
+              assert local.exists(), f'Sitemap target missing: {url}'
           print(f'Sitemap XML and URL set passed: {len(urls)} URLs')
           PY
 
@@ -172,9 +222,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Wait for GitHub Pages propagation
         shell: bash
         run: sleep 90
+
       - name: Verify every published sitemap URL
         shell: bash
         run: |
@@ -201,12 +253,13 @@ jobs:
               raise SystemExit(1)
           print('Every sitemap URL returned HTTP 200 HTML')
           PY
+
       - name: Verify published GitHub Pages smoke routes
         shell: bash
         run: |
           set -euo pipefail
           base='https://panoskhan.github.io/free-ai-academy-greece'
-          for path in '/' '/courses/' '/student-dashboard/' '/portfolio/' '/builder/' '/creator-dashboard/' '/creator-dashboard/deployment-dashboard.html' '/creator-dashboard/website-project.html' '/preview/' '/release-center/' '/release-center/audit-log.html' '/website-builder/'; do
+          for path in '/' '/courses/' '/student-dashboard/' '/portfolio/' '/builder/' '/builder/project.html' '/creator-dashboard/' '/creator-dashboard/deployment-dashboard.html' '/creator-dashboard/website-project.html' '/preview/' '/release-center/' '/release-center/audit-log.html' '/website-builder/' '/website-builder/project.html'; do
             ok=0
             for attempt in 1 2 3 4 5 6 7; do
               code=$(curl -L -sS -o /tmp/page.html -w '%{http_code}' "$base$path" || true)
