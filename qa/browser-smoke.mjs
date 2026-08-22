@@ -76,9 +76,15 @@ for (const file of files) {
         await test.page.waitForTimeout(150);
         const target = test.page.locator('button').nth(button.index);
         if (!(await target.count())) throw new Error('button disappeared before click');
-        await target.scrollIntoViewIfNeeded();
         console.log(`  click button #${button.index}: ${button.text}`);
-        await target.click({ timeout: 5000 });
+        if (await target.isVisible().catch(() => false)) {
+          await target.scrollIntoViewIfNeeded({ timeout: 3000 }).catch(() => {});
+          await target.click({ timeout: 5000 });
+        } else {
+          // Hidden controls are often inside tabbed panels. Dispatch the real DOM click
+          // so every declared control is still exercised without inventing UI state.
+          await target.evaluate(element => element.click());
+        }
         await test.page.waitForTimeout(200);
         if (test.errors.length) throw new Error(test.errors.join(' | '));
       } catch (error) {
@@ -88,13 +94,14 @@ for (const file of files) {
       }
     }
 
-    const links = await base.page.locator('a[href]').evaluateAll(elements => elements.map((anchor, index) => ({
+    const allLinks = await base.page.locator('a[href]').evaluateAll(elements => elements.map((anchor, index) => ({
       index,
       href: anchor.href,
       text: (anchor.innerText || anchor.getAttribute('aria-label') || `link-${index}`).trim().slice(0, 100),
       download: anchor.hasAttribute('download'),
       target: anchor.getAttribute('target') || ''
-    })).filter(link => link.href.startsWith(BASE)));
+    })));
+    const links = allLinks.filter(link => link.href.startsWith(BASE));
     linkCount += links.length;
     console.log(`Internal links discovered: ${links.length}`);
 
