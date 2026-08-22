@@ -68,3 +68,5 @@ The project may be presented as an independent open-source initiative of **Panos
 The repository contains an automated Academy QA workflow covering core files, HTML metadata, JSON contracts, end-to-end static smoke tests, local navigation, builder safety, portfolio safety, sitemap structure, published sitemap URLs, and published GitHub Pages smoke routes. The Website Builder and Academy Builder remain browser-first prototypes: authenticated GitHub repository creation and production deployment still require a real backend/deployment integration and are never falsely reported as complete.
 
 Public QA and launch checklists persist human-review progress locally and can export review status for release records. A feature is treated as released only after automated QA and applicable published-route verification provide evidence for the current commit.
+
+QA verification checkpoint: the Evidence Portfolio URL-safety gate is covered by DOM-based rendering rather than fragile string matching.
