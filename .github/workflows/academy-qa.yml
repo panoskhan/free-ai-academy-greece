@@ -15,7 +15,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html lessons/ai-foundations.html student-path/index.html student-dashboard/index.html portfolio/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js website-builder/index.html website-builder/contract-bridge.js sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/website-builder-contract.json)
+          files=(index.html courses/index.html courses/ai-foundations.html courses/prompt-engineering.html courses/web-foundations.html courses/first-ai-tool.html courses/github-self-hosting.html courses/responsible-ai.html lessons/ai-foundations.html student-path/index.html student-dashboard/index.html portfolio/index.html projects/index.html assessment/index.html accessibility/index.html certificates/index.html contact/index.html privacy/index.html terms/index.html builder/index.html creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html preview/index.html release-center/index.html release-center/history.html release-center/audit-log.html qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js website-builder/index.html website-builder/contract-bridge.js sitemap.xml robots.txt manifest.webmanifest 404.html data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/portfolio-record-schema.json data/website-builder-contract.json)
           for f in "${files[@]}"; do test -f "$f" || { echo "Missing: $f"; exit 1; }; done
           echo "Core files present: ${#files[@]}"
       - name: Check HTML basics
@@ -39,7 +39,7 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          files=['data/academy-model.json','data/example-academy.json','data/release-audit-schema.json','data/website-project-model.json','data/assessment-record-schema.json','data/website-builder-contract.json']
+          files=['data/academy-model.json','data/example-academy.json','data/release-audit-schema.json','data/website-project-model.json','data/assessment-record-schema.json','data/portfolio-record-schema.json','data/website-builder-contract.json']
           for name in files:
               obj=json.loads(Path(name).read_text(encoding='utf-8'))
               assert isinstance(obj,(dict,list)), name
@@ -53,11 +53,17 @@ jobs:
           assert assessment['properties']['schema']['const']=='faa-assessment-record/v2'
           assert assessment['properties']['checks']['minItems']==9
           assert assessment['properties']['scores']['minItems']==7
+          portfolio=json.loads(Path('data/portfolio-record-schema.json').read_text(encoding='utf-8'))
+          assert portfolio['properties']['schema']['const']=='faa-portfolio-record/v1'
+          assert portfolio['properties']['records']['items']['required']==['project','evidence','createdAt']
+          assert portfolio['properties']['records']['items']['properties']['project']['maxLength']==120
+          assert portfolio['properties']['records']['items']['properties']['evidence']['maxLength']==1000
           contract=json.loads(Path('data/website-builder-contract.json').read_text(encoding='utf-8'))
           assert contract['id']=='faa-website-builder-contract/v1'
           assert contract['properties']['project']['properties']['type']['const']=='website'
           assert contract['properties']['project']['properties']['status']['enum']==['draft','testing','preview','production']
           print('Assessment record contract passed')
+          print('Portfolio record contract passed')
           print('Website project model contract passed')
           print('Website Builder contract passed')
           PY
@@ -99,6 +105,15 @@ jobs:
               raise SystemExit(1)
           print(f'Checked local links in {len(html_files)} HTML files')
           PY
+      - name: Evidence Portfolio functional markers
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=portfolio/index.html
+          for marker in 'EVIDENCE-FIRST LEARNING' 'faa-portfolio-v1' 'function removeRecord' 'exportRecord' 'Portfolio ≠ accreditation'; do
+            grep -q "$marker" "$file" || { echo "Evidence Portfolio missing marker: $marker"; exit 1; }
+          done
+          echo 'Evidence Portfolio functional markers passed'
       - name: Website Builder functional markers
         shell: bash
         run: |
