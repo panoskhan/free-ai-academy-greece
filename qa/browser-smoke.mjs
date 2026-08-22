@@ -49,6 +49,7 @@ async function freshPage() {
 for (const file of files) {
   const route = routeFor(file);
   pageCount += 1;
+  console.log(`\n=== PAGE ${pageCount}/${files.length}: ${route} ===`);
   const base = await freshPage();
   try {
     const response = await base.page.goto(BASE + route, { waitUntil: 'domcontentloaded', timeout: 15000 });
@@ -64,6 +65,7 @@ for (const file of files) {
       disabled: button.disabled
     })));
     buttonCount += buttons.length;
+    console.log(`Buttons discovered: ${buttons.length}`);
 
     for (const button of buttons) {
       if (button.disabled) continue;
@@ -75,6 +77,7 @@ for (const file of files) {
         const target = test.page.locator('button').nth(button.index);
         if (!(await target.count())) throw new Error('button disappeared before click');
         await target.scrollIntoViewIfNeeded();
+        console.log(`  click button #${button.index}: ${button.text}`);
         await target.click({ timeout: 5000 });
         await test.page.waitForTimeout(200);
         if (test.errors.length) throw new Error(test.errors.join(' | '));
@@ -93,6 +96,7 @@ for (const file of files) {
       target: anchor.getAttribute('target') || ''
     })).filter(link => link.href.startsWith(BASE)));
     linkCount += links.length;
+    console.log(`Internal links discovered: ${links.length}`);
 
     for (const link of links) {
       const test = await freshPage();
@@ -104,6 +108,7 @@ for (const file of files) {
         if (!(await target.count())) throw new Error('link disappeared before click');
         const downloadPromise = test.page.waitForEvent('download', { timeout: 1200 }).catch(() => null);
         const popupPromise = test.page.waitForEvent('popup', { timeout: 1200 }).catch(() => null);
+        console.log(`  click link #${link.index}: ${link.text}`);
         await target.click({ timeout: 5000 });
         const download = await downloadPromise;
         const popup = await popupPromise;
@@ -135,7 +140,7 @@ for (const file of files) {
 }
 
 await browser.close();
-console.log(`Pages tested: ${pageCount}`);
+console.log(`\nPages tested: ${pageCount}`);
 console.log(`Buttons clicked: ${buttonCount}`);
 console.log(`Internal links clicked: ${linkCount}`);
 
