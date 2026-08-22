@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://panoskhan.github.io/free-ai-academy-greece/data/portfolio-record-schema.json",
+  "title": "Free AI Academy Evidence Portfolio Record",
+  "type": "object",
+  "required": ["schema", "exportedAt", "records"],
+  "properties": {
+    "schema": { "const": "faa-portfolio-record/v1" },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["project", "evidence", "createdAt"],
+        "properties": {
+          "project": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "url": { "type": "string", "maxLength": 300 },
+          "evidence": { "type": "string", "minLength": 1, "maxLength": 1000 },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
