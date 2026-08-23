@@ -1,0 +1,20 @@
+name: Portfolio Contract QA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portfolio-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run executable portfolio export contract tests
+        run: python3 qa/portfolio-contract-test.py
