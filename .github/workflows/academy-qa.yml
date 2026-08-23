@@ -235,7 +235,8 @@ jobs:
           PY
 
   published-verify:
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    needs: qa
+    if: ((github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.qa.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
