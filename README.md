@@ -47,6 +47,8 @@ The goal is demonstrable ability, not passive completion. Learners should leave 
 
 The Evidence Portfolio turns learning into portable proof-of-work. Learners can record real projects, demos or repositories, testing and verification notes, documentation, responsible-AI evidence, delivery/self-hosting evidence, and reflections. Records are stored locally and can be exported as JSON. Portfolio evidence is not an accredited qualification or independent certification.
 
+The Portfolio is exposed from the main Academy navigation, homepage calls-to-action, dashboard actions, and the Academy tools section so the proof-of-work stage is discoverable as part of the normal learner journey.
+
 ## Certificates
 
 The Academy may issue a **Certificate of Completion / Βεβαίωση Ολοκλήρωσης** when published requirements are met. This is an educational record issued by the project and must not be represented as a government, university, regulated-profession, or accredited qualification unless formal recognition is obtained.
