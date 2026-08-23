@@ -1,0 +1,20 @@
+name: Course Evidence Template QA
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  course-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python syntax
+        run: python3 -m py_compile qa/course-evidence-template-test.py
+      - name: Execute course evidence template contract
+        run: python3 qa/course-evidence-template-test.py
