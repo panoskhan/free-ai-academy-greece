@@ -14,6 +14,7 @@ def validate_record(record):
     datetime.fromisoformat(record['createdAt'].replace('Z', '+00:00'))
     if 'url' in record:
         assert isinstance(record['url'], str) and len(record['url']) <= 300
+        assert record['url'].startswith(('http://', 'https://')) and ' ' not in record['url']
 
 
 def validate_export(payload):
@@ -44,6 +45,8 @@ for bad in [
     {**valid, 'records': [{**valid['records'][0], 'project': ''}]},
     {**valid, 'records': [{**valid['records'][0], 'evidence': 'x' * 1001}]},
     {**valid, 'records': [{**valid['records'][0], 'unexpected': True}]},
+    {**valid, 'records': [{**valid['records'][0], 'url': 'javascript:alert(1)'}]},
+    {**valid, 'records': [{**valid['records'][0], 'url': 'https://example.com/bad url'}]},
 ]:
     try:
         validate_export(bad)
