@@ -30,7 +30,7 @@ jobs:
             creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html
             preview/index.html
             release-center/index.html release-center/history.html release-center/audit-log.html
-            qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/smoke-test.py
+            qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/portfolio-contract-test.py qa/smoke-test.py
             website-builder/index.html website-builder/project.html website-builder/contract-bridge.js
             data/academy-store.js data/creator-workspace-store.js
             sitemap.xml robots.txt manifest.webmanifest 404.html
@@ -63,7 +63,7 @@ jobs:
             node --check "$f"
             js_count=$((js_count+1))
           done < <(find . -name '*.js' -not -path './.git/*' -print0)
-          python3 -m py_compile qa/smoke-test.py
+          python3 -m py_compile qa/smoke-test.py qa/portfolio-contract-test.py
           echo "JavaScript syntax OK: $js_count files"
           echo "Python syntax OK"
 
@@ -101,6 +101,10 @@ jobs:
           print('Website project model contract passed')
           print('Website Builder contract passed')
           PY
+
+      - name: Execute Portfolio export contract
+        shell: bash
+        run: python3 qa/portfolio-contract-test.py
 
       - name: Validate Website Builder contract bridge
         shell: bash
