@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Website Project control center: save versions, validate, preview and prepare release.">
+<meta name="description" content="Website Project control center: create with AI, save versions, validate, preview and prepare release.">
 <title>Website Project — Free AI Academy Greece</title>
 <style>
 body{margin:0;background:#f4f6fa;color:#101828;font-family:system-ui,sans-serif;line-height:1.55}.wrap{max-width:1100px;margin:auto;padding:24px 18px}.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.top a{color:#635bff;font-weight:900;text-decoration:none}.hero{margin-top:18px;background:#111827;color:white;border-radius:22px;padding:28px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}.card{background:white;border:1px solid #e4e7ec;border-radius:18px;padding:20px}.wide{grid-column:1/-1}.status{font-weight:900}.good{color:#087f5b}.pending{color:#9a6700}.bad{color:#b42318}.bar{height:12px;background:#e4e7ec;border-radius:99px;overflow:hidden}.fill{height:100%;background:#635bff;width:0}.btn{display:inline-block;border:0;border-radius:10px;padding:11px 14px;background:#635bff;color:#fff;font-weight:900;text-decoration:none;cursor:pointer}.btn.alt{background:white;color:#101828;border:1px solid #d0d5dd}.actions{display:flex;gap:9px;flex-wrap:wrap}.log{border-left:3px solid #635bff;padding-left:12px;margin:12px 0}.meta{font-size:13px;color:#667085}@media(max-width:800px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
@@ -14,6 +14,7 @@ body{margin:0;background:#f4f6fa;color:#101828;font-family:system-ui,sans-serif;
 <div class="top"><a href="../">← Academy Home</a><div><a href="./index.html">Website Builder</a> · <a href="../creator-dashboard/index.html">Creator Studio</a> · <a href="../release-center/index.html">Release Center</a></div></div>
 <section class="hero"><small>WEBSITE PROJECT CONTROL CENTER</small><h1 id="title">My Website</h1><p id="subtitle">Project state, validation, versions and release readiness.</p><div class="bar"><div id="fill" class="fill"></div></div><p id="state">Draft · 0/5 gates</p></section>
 <section class="grid">
+<article class="card"><h2>🤖 AI Chat Builder</h2><p>Describe your website in normal language and keep editing it by chat.</p><span class="status good">✓ Available</span><p><a class="btn" href="./ai-studio.html">Open AI Website Studio</a></p></article>
 <article class="card"><h2>1. Build</h2><p>Edit your website in the Website Builder.</p><span class="status good">✓ Available</span><p><a class="btn" href="./index.html">Open Builder</a></p></article>
 <article class="card"><h2>2. Validate</h2><p id="validation">Run project checks before preview.</p><span id="validationStatus" class="status pending">● Not checked</span><p><button class="btn" onclick="validate()">Run validation</button></p></article>
 <article class="card"><h2>3. Preview</h2><p>Review the generated site before release.</p><span class="status good">✓ Browser preview available</span><p><a class="btn" href="./index.html">Open Preview in Builder</a></p></article>
