@@ -1,0 +1,26 @@
+{
+  "id": "faa-ai-website-studio-contract/v1",
+  "purpose": "Safe chat-to-website contract for the Free AI Academy Website Studio.",
+  "flow": ["prompt", "intent", "site-model", "preview", "edit", "export", "qa", "publish"],
+  "siteModel": {
+    "required": ["business", "title", "description", "pages", "style", "accent", "cards"],
+    "status": {"enum": ["draft", "testing", "preview", "production"]}
+  },
+  "browserBoundary": {
+    "allowed": ["localStorage", "safe DOM rendering", "static preview", "HTML export", "JSON export"],
+    "forbidden": ["browser-held API secrets", "arbitrary code execution", "silent remote deployment"]
+  },
+  "providerBoundary": {
+    "localMode": "deterministic-copilot",
+    "remoteMode": "server-side-model-adapter",
+    "secretLocation": "server-side only"
+  },
+  "acceptance": [
+    "natural-language prompt creates a site model",
+    "follow-up prompt changes the existing site model",
+    "preview escapes user-controlled text",
+    "HTML export is generated locally",
+    "JSON export preserves the site model",
+    "no browser API key is required"
+  ]
+}
