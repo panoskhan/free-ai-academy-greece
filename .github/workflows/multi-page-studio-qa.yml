@@ -1,0 +1,37 @@
+name: Multi-Page Studio QA
+
+on:
+  push:
+    paths:
+      - 'website-builder/multi-page-studio.html'
+      - 'qa/multi-page-studio-contract-test.js'
+      - '.github/workflows/multi-page-studio-qa.yml'
+  pull_request:
+    paths:
+      - 'website-builder/multi-page-studio.html'
+      - 'qa/multi-page-studio-contract-test.js'
+      - '.github/workflows/multi-page-studio-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: JavaScript syntax check
+        run: node --check qa/multi-page-studio-contract-test.js
+      - name: Multi-page Studio contract QA
+        run: node qa/multi-page-studio-contract-test.js
+      - name: Verify required page markers
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=website-builder/multi-page-studio.html
+          for marker in 'MULTI-PAGE CHAT-TO-WEBSITE' 'Full Site QA' 'Export Site' 'Save JSON' 'aria-live' 'function pagesFromPrompt' 'function makePages' 'function exportSite'; do
+            grep -q "$marker" "$file" || { echo "Missing marker: $marker"; exit 1; }
+          done
+          echo 'Multi-page Studio page markers passed'
