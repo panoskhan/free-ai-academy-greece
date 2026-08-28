@@ -1,0 +1,15 @@
+name: Multi-Page Studio v2 QA
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node qa/multi-page-studio-v2-contract-test.js
+      - run: node --check qa/multi-page-studio-v2-contract-test.js
