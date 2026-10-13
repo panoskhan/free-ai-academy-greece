@@ -115,3 +115,21 @@ jobs:
               assert base+path in urls, f'Missing published sitemap entry: {path}'
           print(f'Published sitemap valid: {len(urls)} URLs')
           PY
+
+      - name: Verify shared social preview image
+        shell: bash
+        run: |
+          set -euo pipefail
+          # og:image / twitter:image used by every indexed page; served from the domain root repo.
+          url='https://panoskhan.online/assets/og/og-free-ai-academy-greece.png'
+          grep -q "$url" index.html || { echo "index.html no longer references $url; update this check"; exit 1; }
+          type=$(curl -L -fsS --max-time 20 -o /tmp/og.png -w '%{content_type}' "$url")
+          case "$type" in image/png*) ;; *) echo "Unexpected content type for OG image: $type"; exit 1;; esac
+          python3 - <<'PY'
+          import struct
+          data=open('/tmp/og.png','rb').read(24)
+          assert data[:8]==b'\x89PNG\r\n\x1a\n', 'OG image is not a PNG'
+          w,h=struct.unpack('>II',data[16:24])
+          assert (w,h)==(1200,630), f'OG image is {w}x{h}, expected 1200x630'
+          print(f'Social preview image OK: {w}x{h}')
+          PY
