@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: JavaScript syntax check
         run: node --check qa/multi-page-studio-contract-test.js
       - name: Multi-page Studio contract QA

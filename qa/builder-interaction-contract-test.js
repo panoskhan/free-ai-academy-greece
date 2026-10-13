@@ -28,6 +28,7 @@ const nodes = {};
 const storage = new Map();
 const document = {
   getElementById(id) { return nodes[id] || (nodes[id] = el()); },
+  querySelectorAll() { return []; },
   createElement() { return el(); }
 };
 const context = {
