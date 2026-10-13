@@ -18,6 +18,19 @@ main{padding:36px 0}.section{margin:42px 0}.section h2{font-size:30px;letter-spa
 .notice{font-size:13px;color:var(--muted)}.trust{background:#fff;border-left:4px solid var(--accent2);padding:17px;border-radius:10px}.footerlinks{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}.footerlinks a{font-weight:800;color:#5b50dc;text-decoration:none}footer{border-top:1px solid var(--line);padding:30px 0 60px;color:var(--muted);font-size:13px}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.nav{align-items:flex-start}.navlinks{justify-content:flex-start}.metrics{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.grid,.dashgrid,.metrics{grid-template-columns:1fr}.hero{padding:60px 0 45px}.hero h1{font-size:48px}.nav{flex-direction:column}.navlinks{width:100%}.navlinks a{font-size:11px}.subnav .wrap{gap:11px}}
+
+/* layout polish: one-row swipeable menus on small screens, roomier Greek headlines */
+.navlinks a,.subnav a,.sub a{white-space:nowrap}
+.hero h1{line-height:1.04;letter-spacing:-.035em;max-width:1000px}
+@media (max-width:900px){
+  .nav{gap:10px}
+  .wrap.nav{padding-left:16px;padding-right:16px}
+  .navlinks,.subnav .wrap,.sub .wrap{display:flex;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0;max-width:100%}
+  .navlinks::-webkit-scrollbar,.subnav .wrap::-webkit-scrollbar,.sub .wrap::-webkit-scrollbar{display:none}
+  .navlinks a,.subnav a,.sub a{flex:0 0 auto}
+  .navlinks{margin-top:8px;padding-bottom:2px;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+  .subnav .wrap,.sub .wrap{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+}
 </style>
 <link rel="canonical" href="https://panoskhan.github.io/free-ai-academy-greece/">
 <meta property="og:image" content="https://panoskhan.github.io/assets/og/og-free-ai-academy-greece.png">
@@ -34,7 +47,7 @@ main{padding:36px 0}.section{margin:42px 0}.section h2{font-size:30px;letter-spa
 <header><div class="wrap nav">
 <a class="logo" href="./" style="text-decoration:none">🇬🇷 Free AI Academy Greece<small>Μάθε • Χτίσε • Δοκίμασε • Δημοσίευσε</small></a>
 <nav class="navlinks" aria-label="Κύρια πλοήγηση">
-<a href="courses/index.html">Μαθήματα</a><a href="student-path/index.html">A–Z Path</a><a class="hot" href="student-dashboard/index.html">🎓 Student Dashboard</a><a href="projects/index.html">Projects</a><a href="portfolio/index.html">Portfolio</a><a href="assessment/index.html">Assessment</a><a href="certificates/index.html">Certificates</a><a href="builder/index.html">Builder</a><a href="creator-dashboard/index.html">Creator Studio</a><a href="release-center/index.html">Release Center</a>
+<a href="courses/index.html">Μαθήματα</a><a href="student-path/index.html">A–Z Path</a><a class="hot" href="student-dashboard/index.html">🎓 Dashboard</a><a href="projects/index.html">Projects</a><a href="portfolio/index.html">Portfolio</a><a href="assessment/index.html">Assessment</a><a href="certificates/index.html">Certificates</a><a href="builder/index.html">Builder</a><a href="creator-dashboard/index.html">Creator Studio</a><a href="release-center/index.html">Release</a>
 </nav></div></header>
 <div class="subnav"><div class="wrap" aria-label="Βοηθητική πλοήγηση"><a href="about/index.html">About</a><a href="contact/index.html">Contact</a><a href="accessibility/index.html">Accessibility</a><a href="preview/index.html">Preview</a><a href="creator-dashboard/workspace.html">Creator Workspace</a><a href="creator-dashboard/academy-editor.html">Academy Editor</a><a href="creator-dashboard/academy-manager.html">Academy Manager</a><a href="creator-dashboard/github-connect.html">GitHub Connect</a><a href="release-center/history.html">Release History</a><a href="release-center/audit-log.html">Audit Log</a><a href="privacy/index.html">Privacy</a><a href="terms/index.html">Terms</a></div></div>
 <section class="hero"><div class="wrap"><div class="eyebrow">Δωρεάν • Ελληνικά • Πρακτικά • Open learning</div><h1>Μάθε AI χτίζοντας πραγματικά πράγματα.</h1><p>Η πλήρης ελληνική Academy για AI, web development και πρακτικά projects. Μαθαίνεις βήμα-βήμα, κρατάς την πρόοδό σου, φτιάχνεις projects και έχεις ξεκάθαρη διαδρομή από το πρώτο μάθημα μέχρι το final assessment.</p><div class="actions"><a class="btn primary" href="courses/index.html">Ξεκίνα δωρεάν →</a><a class="btn" href="student-dashboard/index.html">Άνοιξε Student Dashboard</a><a class="btn" href="student-path/index.html">Δες όλο το A–Z Path</a><a class="btn" href="projects/index.html">Project Studio</a><a class="btn" href="portfolio/index.html">Evidence Portfolio</a></div></div></section>
