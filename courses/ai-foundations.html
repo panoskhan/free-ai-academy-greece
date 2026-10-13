@@ -38,6 +38,7 @@ a{color:var(--accent)}
 .task ul{margin:8px 0 0;padding-left:0;list-style:none}
 .task li{margin:8px 0}
 .task label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.task input:disabled{cursor:not-allowed}
 .task input{margin-top:6px;width:20px;height:20px;flex:0 0 auto;accent-color:var(--ok)}
 .quiz{margin-top:18px}
 .quiz p.q{font-weight:800;margin:14px 0 8px}
@@ -47,6 +48,9 @@ a{color:var(--accent)}
 .feedback{display:none;margin-top:8px;font-weight:700}
 .feedback.right{display:block;color:var(--ok)}
 .feedback.wrong{display:block;color:#b42318}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .feedback.wrong{color:#ff8a80}}
+:root[data-theme="dark"] .feedback.wrong{color:#ff8a80}
+.task input:disabled,.task input:disabled+*{opacity:.5;cursor:not-allowed}
 .btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:800;border:0;cursor:pointer;font:inherit;font-weight:800;min-height:44px}
 .btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:26px 0 40px}
@@ -112,7 +116,7 @@ a{color:var(--accent)}
   <section class="card" id="l2" data-lesson="l2">
     <div class="lesson-num">Μάθημα 2 από 4</div>
     <h2>Τι είναι το Generative AI;</h2>
-    <p>Τα <strong>generative AI</strong> συστήματα παράγουν νέο περιεχόμενο, όπως κείμενο, εικόνες, ήχο ή κώδικα, με βάση την είσοδο που τους δίνει ο χρήστης. Το σύστημα προβλέπει την πιο πιθανή συνέχεια. Δεν «ξέρει» αν μια πρόταση είναι αληθινή.</p>
+    <p>Τα <strong>generative AI</strong> συστήματα παράγουν νέο περιεχόμενο, όπως κείμενο, εικόνες, ήχο ή κώδικα, με βάση την είσοδο που τους δίνει ο χρήστης. Χρησιμοποιούν μοτίβα που έμαθαν από δεδομένα. Πολλά γλωσσικά μοντέλα παράγουν κείμενο προβλέποντας διαδοχικά το επόμενο κομμάτι. Δεν «ξέρουν» από μόνα τους αν μια πρόταση είναι αληθινή.</p>
     <div class="tip"><span class="rule">Κανόνας Academy:</span> παραγωγή περιεχομένου ≠ εγγύηση αλήθειας. Ελέγχουμε πάντα τους σημαντικούς ισχυρισμούς.</div>
 
     <div class="task" aria-labelledby="t2">
@@ -167,7 +171,7 @@ a{color:var(--accent)}
   <section class="card" id="l4" data-lesson="l4">
     <div class="lesson-num">Μάθημα 4 από 4</div>
     <h2>Υπεύθυνη χρήση και δεδομένα</h2>
-    <p>Μην γράφεις κωδικούς, αριθμούς καρτών, ΑΜΚΑ ή άλλα ευαίσθητα προσωπικά δεδομένα σε εργαλεία AI, εκτός αν ξέρεις ακριβώς πώς αποθηκεύονται. Για ιατρικά, νομικά ή οικονομικά θέματα, ζήτα τη γνώμη ενός επαγγελματία.</p>
+    <p>Μην γράφεις ποτέ κωδικούς, αριθμούς καρτών ή ΑΜΚΑ σε εργαλεία AI, όσο καλά κι αν ξέρεις πώς αποθηκεύονται. Για άλλα προσωπικά δεδομένα, έλεγξε πρώτα πώς αποθηκεύονται και χρησιμοποιούνται. Για ιατρικά, νομικά ή οικονομικά θέματα, ζήτα τη γνώμη ενός επαγγελματία.</p>
     <div class="tip"><span class="rule">Κανόνας Academy:</span> καμία μυστική πληροφορία, κλειδί API ή κωδικός σε δημόσιο αποθετήριο ή σε εντολή.</div>
 
     <div class="task" aria-labelledby="t4">
@@ -236,7 +240,12 @@ a{color:var(--accent)}
     document.querySelector('[role="progressbar"]').setAttribute("aria-valuenow", String(pct));
     document.getElementById("progtext").textContent = "Πρόοδος: " + done + " από " + lessons.length + " μαθήματα";
 
-    var finalDone = !!state["final-a"] && !!state["final-b"];
+    var unlocked = done === lessons.length;
+    document.querySelectorAll('[data-task^="final-"]').forEach(function (b) {
+      b.disabled = !unlocked;
+      if (!unlocked && b.checked) { b.checked = false; state[b.getAttribute("data-task")] = false; save(); }
+    });
+    var finalDone = unlocked && !!state["final-a"] && !!state["final-b"];
     var msg = document.getElementById("finalmsg");
     if (done < lessons.length) {
       msg.textContent = "Ολοκλήρωσε τα 4 μαθήματα για να ξεκλειδώσει η τελική εργασία.";

@@ -38,6 +38,7 @@ a{color:var(--accent)}
 .task ul{margin:8px 0 0;padding-left:0;list-style:none}
 .task li{margin:8px 0}
 .task label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.task input:disabled{cursor:not-allowed}
 .task input{margin-top:6px;width:20px;height:20px;flex:0 0 auto;accent-color:var(--ok)}
 .quiz{margin-top:18px}
 .quiz p.q{font-weight:800;margin:14px 0 8px}
@@ -47,6 +48,9 @@ a{color:var(--accent)}
 .feedback{display:none;margin-top:8px;font-weight:700}
 .feedback.right{display:block;color:var(--ok)}
 .feedback.wrong{display:block;color:#b42318}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .feedback.wrong{color:#ff8a80}}
+:root[data-theme="dark"] .feedback.wrong{color:#ff8a80}
+.task input:disabled,.task input:disabled+*{opacity:.5;cursor:not-allowed}
 .btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:800;border:0;cursor:pointer;font:inherit;font-weight:800;min-height:44px}
 .btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:26px 0 40px}
@@ -233,7 +237,12 @@ a{color:var(--accent)}
     document.querySelector('[role="progressbar"]').setAttribute("aria-valuenow", String(pct));
     document.getElementById("progtext").textContent = "Πρόοδος: " + done + " από " + lessons.length + " μαθήματα";
 
-    var finalDone = !!state["final-a"] && !!state["final-b"];
+    var unlocked = done === lessons.length;
+    document.querySelectorAll('[data-task^="final-"]').forEach(function (b) {
+      b.disabled = !unlocked;
+      if (!unlocked && b.checked) { b.checked = false; state[b.getAttribute("data-task")] = false; save(); }
+    });
+    var finalDone = unlocked && !!state["final-a"] && !!state["final-b"];
     var msg = document.getElementById("finalmsg");
     if (done < lessons.length) {
       msg.textContent = "Ολοκλήρωσε τα 4 μαθήματα για να ξεκλειδώσει η τελική εργασία.";
