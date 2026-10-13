@@ -32,7 +32,7 @@ jobs:
             release-center/index.html release-center/history.html release-center/audit-log.html
             qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/portfolio-contract-test.py qa/smoke-test.py qa/ai-website-studio-contract-test.js
             website-builder/index.html website-builder/project.html website-builder/contract-bridge.js website-builder/ai-studio.html
-            data/academy-store.js data/creator-workspace-store.js
+            data/creator-workspace-store.js
             sitemap.xml robots.txt manifest.webmanifest 404.html
             data/academy-model.json data/example-academy.json data/release-audit-schema.json data/website-project-model.json data/assessment-record-schema.json data/portfolio-record-schema.json data/website-builder-contract.json data/ai-website-studio-contract.json
           )
@@ -237,8 +237,8 @@ jobs:
           sitemap=Path('sitemap.xml'); root=ET.parse(sitemap).getroot(); ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'}
           urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text and x.text.strip()]
           assert root.tag.endswith('urlset'), 'Invalid sitemap root'; assert urls, 'Sitemap contains no URLs'; assert len(urls)==len(set(urls)), 'Sitemap contains duplicate URLs'
-          base='https://panoskhan.github.io/free-ai-academy-greece'; assert all(u.startswith(base+'/') or u==base+'/' for u in urls), 'Unexpected sitemap origin'
-          required=['/about/','/academy-standard/','/student-path/','/student-dashboard/','/portfolio/','/projects/','/assessment/','/accessibility/','/certificates/','/contact/','/privacy/','/terms/','/builder/','/builder/project.html','/creator-dashboard/','/creator-dashboard/workspace.html','/creator-dashboard/academy-manager.html','/creator-dashboard/academy-editor.html','/creator-dashboard/github-connect.html','/creator-dashboard/deployment-dashboard.html','/creator-dashboard/website-project.html','/preview/','/release-center/','/release-center/history.html','/release-center/audit-log.html','/qa/link-checklist.html','/qa/launch-checklist.html','/website-builder/','/website-builder/project.html','/website-builder/ai-studio.html']
+          base='https://panoskhan.online/free-ai-academy-greece'; assert all(u.startswith(base+'/') or u==base+'/' for u in urls), 'Unexpected sitemap origin'
+          required=['/about/','/academy-standard/','/student-path/','/student-dashboard/','/portfolio/','/projects/','/assessment/','/accessibility/','/certificates/','/contact/','/privacy/','/terms/','/builder/','/builder/project.html','/creator-dashboard/','/creator-dashboard/workspace.html','/creator-dashboard/academy-manager.html','/creator-dashboard/academy-editor.html','/creator-dashboard/github-connect.html','/creator-dashboard/deployment-dashboard.html','/creator-dashboard/website-project.html','/preview/','/release-center/','/release-center/history.html','/release-center/audit-log.html','/website-builder/','/website-builder/project.html','/website-builder/ai-studio.html']
           for path in required: assert base+path in urls, f'Missing sitemap entry: {path}'
           for url in urls:
               path=url[len(base):].lstrip('/'); local=Path('index.html') if not path else Path(path)
@@ -285,7 +285,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base='https://panoskhan.github.io/free-ai-academy-greece'
+          base='https://panoskhan.online/free-ai-academy-greece'
           for path in '/' '/courses/' '/student-dashboard/' '/portfolio/' '/builder/' '/builder/project.html' '/creator-dashboard/' '/creator-dashboard/deployment-dashboard.html' '/creator-dashboard/website-project.html' '/preview/' '/release-center/' '/release-center/audit-log.html' '/website-builder/' '/website-builder/project.html' '/website-builder/ai-studio.html'; do
             ok=0
             for attempt in 1 2 3 4 5 6 7; do code=$(curl -L -sS -o /tmp/page.html -w '%{http_code}' "$base$path" || true); if [ "$code" = '200' ]; then ok=1; break; fi; sleep 10; done

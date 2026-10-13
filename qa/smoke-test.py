@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_PATH = "/free-ai-academy-greece"
-SITE_ORIGIN = "https://panoskhan.github.io"
+SITE_ORIGIN = "https://panoskhan.online"
 
 class PageParser(HTMLParser):
     def __init__(self) -> None:
@@ -169,7 +169,7 @@ def main():
             fail(errors, "sitemap.xml contains no URLs")
         for loc in locs:
             parsed = urlparse(loc)
-            if parsed.scheme != "https" or parsed.netloc != "panoskhan.github.io":
+            if parsed.scheme != "https" or parsed.netloc != "panoskhan.online":
                 fail(errors, f"Unexpected sitemap origin: {loc}")
                 continue
             path_part = parsed.path

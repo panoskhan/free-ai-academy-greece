@@ -31,7 +31,7 @@ jobs:
           import urllib.request
           import xml.etree.ElementTree as ET
 
-          base='https://panoskhan.github.io/free-ai-academy-greece'
+          base='https://panoskhan.online/free-ai-academy-greece'
           root=ET.parse('sitemap.xml').getroot()
           ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'}
           urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text and x.text.strip()]
@@ -73,7 +73,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base='https://panoskhan.github.io/free-ai-academy-greece'
+          base='https://panoskhan.online/free-ai-academy-greece'
 
           fetch() {
             local path="$1"
@@ -100,7 +100,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl -L -fsS --max-time 20 'https://panoskhan.github.io/free-ai-academy-greece/sitemap.xml' -o /tmp/sitemap.xml
+          curl -L -fsS --max-time 20 'https://panoskhan.online/free-ai-academy-greece/sitemap.xml' -o /tmp/sitemap.xml
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
           root=ET.parse('/tmp/sitemap.xml').getroot()
@@ -110,7 +110,7 @@ jobs:
           assert root.tag.endswith('urlset')
           assert len(urls)==len(set(urls))
           required=['/portfolio/','/student-dashboard/','/assessment/','/builder/','/website-builder/']
-          base='https://panoskhan.github.io/free-ai-academy-greece'
+          base='https://panoskhan.online/free-ai-academy-greece'
           for path in required:
               assert base+path in urls, f'Missing published sitemap entry: {path}'
           print(f'Published sitemap valid: {len(urls)} URLs')
