@@ -105,7 +105,8 @@ def main():
         if not re.search(r"<!doctype\s+html", text, re.I):
             fail(errors, f"Missing doctype: {relative}")
         lang = re.search(r'<html[^>]*\blang=["\']([^"\']+)', text, re.I)
-        if not lang or lang.group(1).lower() != "el":
+        english_tool = relative.as_posix() == "website-builder/multi-page-studio-v2.html"
+        if not lang or (lang.group(1).lower() != "el" and not (english_tool and lang.group(1).lower() == "en")):
             fail(errors, f'Missing lang="el": {relative}')
         if not re.search(r'<meta[^>]+charset=["\']?utf-8', text, re.I):
             fail(errors, f"Missing UTF-8 charset: {relative}")
