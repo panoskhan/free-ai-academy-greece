@@ -109,7 +109,9 @@ jobs:
           assert urls
           assert root.tag.endswith('urlset')
           assert len(urls)==len(set(urls))
-          required=['/portfolio/','/student-dashboard/','/assessment/','/builder/','/website-builder/']
+          # Builder, dashboard and assessment surfaces are noindex tools and are
+          # intentionally absent from the sitemap; only content pages are listed.
+          required=['/','/courses/','/portfolio/','/projects/','/student-path/','/academy-standard/']
           base='https://panoskhan.online/free-ai-academy-greece'
           for path in required:
               assert base+path in urls, f'Missing published sitemap entry: {path}'

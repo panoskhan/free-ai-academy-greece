@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow">
 <meta name="description" content="Conversational AI website studio with visual editing, page ordering, responsive preview, QA and export.">
 <title>AI Website Studio v2 — Free AI Academy Greece</title>
 <style>
@@ -23,7 +23,7 @@
 <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
 </head>
 <body><main class="wrap">
-<div class="top"><a href="../">← Academy</a><div><a href="./ai-studio.html">AI Studio</a> · <a href="./index.html">Builder</a> · <a href="./project.html">Project Control Center</a></div></div>
+<div class="top"><a href="../">← Academy</a><div><a href="./ai-studio.html">AI Studio</a> · <a href="./">Builder</a> · <a href="./project.html">Project Control Center</a></div></div>
 <section class="hero"><small>AI WEBSITE STUDIO v2</small><h1>Chat. Edit. Reorder. Preview. Export.</h1><p>The same website model powers conversational edits and visual controls.</p></section>
 <div class="layout"><section class="panel"><h2>Chat with your website</h2><div id="messages" class="messages" aria-live="polite"></div><div class="chips"><button class="btn alt" data-p="Create a bakery website with Home, Menu, About and Contact pages.">Bakery</button><button class="btn alt" data-p="Create a developer portfolio with Home, Projects, About and Contact pages.">Portfolio</button></div><div class="composer"><textarea id="prompt" aria-label="Website request" placeholder="Create a website or ask for a change..."></textarea><button class="btn" id="send">Build</button></div><p class="small">Safe local editor: no browser API keys and no arbitrary code execution.</p></section>
 <section class="panel"><div class="toolbar"><button class="btn" id="qa">Run Full QA</button><button class="btn alt" id="export">Export Site</button><button class="btn alt" id="json">Save JSON</button><button class="btn alt" id="desktop">Desktop</button><button class="btn alt" id="mobile">Mobile</button></div><p id="status" class="status">Draft · QA required</p><h2>Pages</h2><div id="tabs" class="tabs"></div><p class="small">Reorder: use “Move Contact before About” or the ↑ / ↓ controls below.</p><div id="order" class="tabs"></div><div class="preview-wrap"><div id="preview" class="preview"></div></div><h3>Site model</h3><div id="model" class="model"></div></section></div></main>

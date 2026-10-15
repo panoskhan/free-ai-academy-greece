@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow">
 <meta name="description" content="Website Project control center: create with AI, save versions, validate, preview and prepare release.">
 <title>Website Builder: project — Free AI Academy Greece</title>
 <style>
@@ -26,16 +26,16 @@ body{margin:0;background:#f4f6fa;color:#101828;font-family:system-ui,sans-serif;
 </head>
 <body>
 <main class="wrap">
-<div class="top"><a href="../">← Academy Home</a><div><a href="./index.html">Website Builder</a> · <a href="../creator-dashboard/index.html">Creator Studio</a> · <a href="../release-center/index.html">Release Center</a></div></div>
+<div class="top"><a href="../">← Academy Home</a><div><a href="./">Website Builder</a> · <a href="../creator-dashboard/">Creator Studio</a> · <a href="../release-center/">Release Center</a></div></div>
 <section class="hero"><small>WEBSITE PROJECT CONTROL CENTER</small><h1 id="title">My Website</h1><p id="subtitle">Project state, validation, versions and release readiness.</p><div class="bar"><div id="fill" class="fill"></div></div><p id="state">Draft · 0/5 gates</p></section>
 <section class="grid">
 <article class="card"><h2>🤖 AI Chat Builder</h2><p>Describe your website in normal language and keep editing it by chat.</p><span class="status good">✓ Available</span><p><a class="btn" href="./ai-studio.html">Open AI Website Studio</a> <a class="btn" href="./multi-page-studio.html">Open Multi-Page Studio</a></p></article>
-<article class="card"><h2>1. Build</h2><p>Edit your website in the Website Builder.</p><span class="status good">✓ Available</span><p><a class="btn" href="./index.html">Open Builder</a></p></article>
+<article class="card"><h2>1. Build</h2><p>Edit your website in the Website Builder.</p><span class="status good">✓ Available</span><p><a class="btn" href="./">Open Builder</a></p></article>
 <article class="card"><h2>2. Validate</h2><p id="validation">Run project checks before preview.</p><span id="validationStatus" class="status pending">● Not checked</span><p><button class="btn" onclick="validate()">Run validation</button></p></article>
-<article class="card"><h2>3. Preview</h2><p>Review the generated site before release.</p><span class="status good">✓ Browser preview available</span><p><a class="btn" href="./index.html">Open Preview in Builder</a></p></article>
+<article class="card"><h2>3. Preview</h2><p>Review the generated site before release.</p><span class="status good">✓ Browser preview available</span><p><a class="btn" href="./">Open Preview in Builder</a></p></article>
 <article class="card"><h2>4. Version</h2><p>Create a local immutable project snapshot before release.</p><span id="versionStatus" class="status pending">No version yet</span><p><button class="btn" onclick="snapshot()">Create version</button></p></article>
-<article class="card"><h2>5. Release</h2><p>A production release needs a real deployment backend.</p><span id="releaseStatus" class="status pending">● Draft</span><p><a class="btn" href="../release-center/index.html">Release Center</a></p></article>
-<article class="card"><h2>6. Ownership</h2><p>Export the project and host it on infrastructure you control.</p><span class="status good">✓ Export supported</span><p><a class="btn" href="./index.html">Export in Builder</a></p></article>
+<article class="card"><h2>5. Release</h2><p>A production release needs a real deployment backend.</p><span id="releaseStatus" class="status pending">● Draft</span><p><a class="btn" href="../release-center/">Release Center</a></p></article>
+<article class="card"><h2>6. Ownership</h2><p>Export the project and host it on infrastructure you control.</p><span class="status good">✓ Export supported</span><p><a class="btn" href="./">Export in Builder</a></p></article>
 <article class="card wide"><h2>📋 Project history</h2><div id="history"><p class="meta">No local versions recorded yet.</p></div><div class="actions"><button class="btn" onclick="exportProject()">Export project JSON</button><button class="btn alt" onclick="resetProject()">Reset local project record</button></div></article>
 <article class="card wide"><h2>🔐 Release truth</h2><p>This control center deliberately separates browser capabilities from backend capabilities. “Preview” means a local/static preview. “Production deployed” can only be recorded after an authenticated deployment service returns verifiable deployment evidence.</p></article>
 </section>

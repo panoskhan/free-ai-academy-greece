@@ -30,7 +30,7 @@ jobs:
             creator-dashboard/index.html creator-dashboard/workspace.html creator-dashboard/academy-editor.html creator-dashboard/academy-manager.html creator-dashboard/github-connect.html creator-dashboard/deployment-dashboard.html creator-dashboard/website-project.html
             preview/index.html
             release-center/index.html release-center/history.html release-center/audit-log.html
-            qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/portfolio-contract-test.py qa/smoke-test.py qa/ai-website-studio-contract-test.js
+            qa/link-checklist.html qa/launch-checklist.html qa/website-builder-contract-test.js qa/portfolio-contract-test.py qa/smoke-test.py qa/ai-website-studio-contract-test.js qa/seo-audit.py qa/seo-lib.py qa/build-sitemap.py
             website-builder/index.html website-builder/project.html website-builder/contract-bridge.js website-builder/ai-studio.html
             data/creator-workspace-store.js
             sitemap.xml robots.txt manifest.webmanifest 404.html
@@ -130,6 +130,24 @@ jobs:
       - name: Full A-to-Z static smoke test
         shell: bash
         run: python3 qa/smoke-test.py
+
+      - name: Index health audit (canonicals, sitemap, thin pages)
+        shell: bash
+        run: python3 qa/seo-audit.py
+
+      - name: Sitemap is in sync with the pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp sitemap.xml /tmp/sitemap-committed.xml
+          python3 qa/build-sitemap.py
+          if ! diff -q <(grep -o '<loc>[^<]*</loc>' /tmp/sitemap-committed.xml) <(grep -o '<loc>[^<]*</loc>' sitemap.xml); then
+            echo 'sitemap.xml is stale. Run: python3 qa/build-sitemap.py'
+            diff <(grep -o '<loc>[^<]*</loc>' /tmp/sitemap-committed.xml) <(grep -o '<loc>[^<]*</loc>' sitemap.xml) || true
+            exit 1
+          fi
+          cp /tmp/sitemap-committed.xml sitemap.xml
+          echo 'Sitemap URL set matches the indexable pages'
 
       - name: Check navigation targets
         shell: bash
@@ -238,8 +256,12 @@ jobs:
           urls=[x.text.strip() for x in root.findall('sm:url/sm:loc',ns) if x.text and x.text.strip()]
           assert root.tag.endswith('urlset'), 'Invalid sitemap root'; assert urls, 'Sitemap contains no URLs'; assert len(urls)==len(set(urls)), 'Sitemap contains duplicate URLs'
           base='https://panoskhan.online/free-ai-academy-greece'; assert all(u.startswith(base+'/') or u==base+'/' for u in urls), 'Unexpected sitemap origin'
-          required=['/about/','/academy-standard/','/student-path/','/student-dashboard/','/portfolio/','/projects/','/assessment/','/accessibility/','/certificates/','/contact/','/privacy/','/terms/','/builder/','/builder/project.html','/creator-dashboard/','/creator-dashboard/workspace.html','/creator-dashboard/academy-manager.html','/creator-dashboard/academy-editor.html','/creator-dashboard/github-connect.html','/creator-dashboard/deployment-dashboard.html','/creator-dashboard/website-project.html','/preview/','/release-center/','/release-center/history.html','/release-center/audit-log.html','/website-builder/','/website-builder/project.html','/website-builder/ai-studio.html']
+          # Only indexable content belongs in the sitemap. Builder, dashboard and
+          # release surfaces are noindex tools, so they are deliberately absent.
+          required=['/','/about/','/academy-standard/','/accessibility/','/certificates/','/contact/','/courses/','/lessons/ai-foundations.html','/portfolio/','/privacy/','/projects/','/student-path/','/terms/']
           for path in required: assert base+path in urls, f'Missing sitemap entry: {path}'
+          forbidden=['/student-dashboard/','/assessment/','/builder/','/creator-dashboard/','/preview/','/release-center/','/website-builder/']
+          for path in forbidden: assert base+path not in urls, f'Noindex page listed in sitemap: {path}'
           for url in urls:
               path=url[len(base):].lstrip('/'); local=Path('index.html') if not path else Path(path)
               if local.is_dir(): local=local/'index.html'
