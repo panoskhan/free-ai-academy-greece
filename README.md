@@ -1,5 +1,7 @@
 # 🇬🇷 Free AI Academy Greece
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23405130.svg)](https://doi.org/10.5281/zenodo.23405130)
+
 **Μάθε. Χτίσε. Δοκίμασε. Δημοσίευσε.**
 
 A free, Greek-first practical academy for learning AI by building real, portable projects.
