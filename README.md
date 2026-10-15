@@ -22,7 +22,7 @@ Help people in Greece understand AI, build useful tools, test their work respons
 - 🛠️ Website Builder with local persistence, live preview, tests, versions and standalone export
 - 🎛️ Creator Workspace connecting website and academy project flows
 - 🚦 Release Center with explicit QA/preview/production boundaries
-- 🔎 SEO sitemap and robots.txt
+- 🔎 Search-index policy: generated sitemap, self-canonical content pages, noindexed tools
 - 📱 Installable web-app manifest foundation
 - ♿ Accessibility and responsible-AI principles
 - 🔐 Privacy-first, no-secret-in-browser guidance
@@ -62,6 +62,46 @@ The current student dashboard and Evidence Portfolio store progress and records 
 ## Project identity
 
 The project may be presented as an independent open-source initiative of **Panos Khan Foundation**, subject to the foundation's official naming and governance decisions.
+
+## Search indexing policy
+
+Google reported two problems in Search Console: *Alternate page with proper canonical tag* and
+*Crawled - currently not indexed*. Both came from the same root cause — URLs were being offered
+to the crawler that were never meant to be indexed.
+
+The site now splits pages into two groups:
+
+**Indexable content pages** (25 URLs) — the homepage, the course catalogue and its courses, the
+lesson, the A–Z path, Project Studio, Evidence Portfolio, the quality standard, and the
+about/contact/privacy/terms/accessibility/certificates pages. Each one is self-canonical, carries a
+unique title and meta description, structured data, breadcrumbs, a shared footer of internal links,
+and enough unique content to be worth indexing. These are the only URLs in `sitemap.xml`.
+
+**Noindexed tool surfaces** (23 pages) — the builders, creator dashboard, student dashboard,
+assessment recorder, preview and release-center screens, the QA checklists and `404.html`. These are
+interactive, browser-local tools with little readable text, so a crawler would fetch them and then
+decline to index them. They declare `<meta name="robots" content="noindex,follow">` and are kept out
+of the sitemap. They are deliberately **not** blocked in `robots.txt`: a disallowed URL can never be
+crawled, so Google would never see the noindex and the URL could linger in results.
+
+Internal links always use the canonical directory form (`/courses/`, never `/courses/index.html`),
+which is what produced the duplicate "alternate page" URLs.
+
+### Keeping it consistent
+
+```bash
+python3 qa/build-sitemap.py   # regenerate sitemap.xml from the pages themselves
+python3 qa/seo-audit.py       # verify canonicals, sitemap coverage and thin pages
+```
+
+`qa/build-sitemap.py` derives the sitemap from each page's robots meta, so the two can never drift.
+`qa/seo-audit.py` runs in CI and fails the build on a missing or wrong canonical, a page thinner
+than 250 words that is still indexable, a duplicate title or description, an `/index.html` internal
+link, or any mismatch between the sitemap and the indexable pages.
+
+> **Note:** crawlers only read `robots.txt` from the domain root
+> (`https://panoskhan.online/robots.txt`). The copy in this repository documents intent; the sitemap
+> itself is submitted in Google Search Console.
 
 ## QA and release status
 

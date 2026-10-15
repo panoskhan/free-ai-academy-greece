@@ -1,3 +1,16 @@
+# Free AI Academy Greece
+#
+# Note: crawlers only read robots.txt from the domain root
+# (https://panoskhan.online/robots.txt). This copy documents the intent for this
+# project and keeps the sitemap reference next to the site it describes. The
+# sitemap is submitted directly in Google Search Console.
+#
+# Pages that should stay out of the index (builders, dashboards, release tools)
+# declare <meta name="robots" content="noindex,follow"> instead of being blocked
+# here on purpose: a disallowed page can never be crawled, so Google would never
+# see the noindex and the URL could linger in search results.
+
 User-agent: *
 Allow: /
+
 Sitemap: https://panoskhan.online/free-ai-academy-greece/sitemap.xml
