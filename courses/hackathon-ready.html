@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Προετοιμασία για AI hackathon στα ελληνικά: επιλογή προβλήματος, ομάδα, σχέδιο 72 ωρών, demo που δεν σπάει και pitch με βάση τα κριτήρια αξιολόγησης.">
+<title>Έτοιμος/η για AI Hackathon — Δωρεάν μάθημα AI | Free AI Academy Greece</title>
+<style>
+:root{--bg:#f6f7fb;--ink:#111827;--muted:#4b5563;--card:#fff;--line:#e5e7eb;--accent:#5b50dc;--ok:#087f5b;--tip:#edfffb;--tipline:#13b8a6;--dark:#111827;--focus:#f59e0b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b1020;--ink:#eef2ff;--muted:#a5b0c8;--card:#141b30;--line:#26304d;--accent:#9d93ff;--ok:#5ee6b5;--tip:#0f2a2a;--tipline:#2dd4bf;--dark:#070b16}}
+:root[data-theme="dark"]{--bg:#0b1020;--ink:#eef2ff;--muted:#a5b0c8;--card:#141b30;--line:#26304d;--accent:#9d93ff;--ok:#5ee6b5;--tip:#0f2a2a;--tipline:#2dd4bf;--dark:#070b16}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.65}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px}
+.topbar{background:var(--dark);color:#fff;padding:12px 0}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar a{color:#dbe2ef;text-decoration:none;font-weight:700;font-size:14px}
+.hero{background:var(--dark);color:#fff;border-radius:22px;padding:28px 24px;margin:22px 0}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c7c2ff}
+.hero h1{font-size:clamp(30px,6vw,44px);line-height:1.1;margin:10px 0 12px}
+.hero p{margin:0;color:#dbe2ef}
+.progress{margin-top:18px}
+.bar{height:10px;background:#ffffff26;border-radius:99px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#13b8a6,#8b80ff);transition:width .3s}
+.progress small{display:block;margin-top:6px;color:#dbe2ef;font-weight:700}
+.toc{display:grid;gap:10px;margin:0 0 22px;padding:0;list-style:none}
+.toc a{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:700}
+.toc a .done{color:var(--ok);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin:18px 0}
+.card h2{margin:4px 0 10px;font-size:26px;line-height:1.2}
+.card h3{margin:22px 0 8px;font-size:19px}
+.lesson-num{font-size:13px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.tip{border-left:4px solid var(--tipline);background:var(--tip);padding:14px 16px;border-radius:10px;margin:16px 0}
+.rule{font-weight:800}
+.task{border:2px dashed var(--accent);border-radius:14px;padding:18px;margin-top:16px}
+.task ul{margin:8px 0 0;padding-left:0;list-style:none}
+.task li{margin:8px 0}
+.task label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.task input:disabled{cursor:not-allowed}
+.task input{margin-top:6px;width:20px;height:20px;flex:0 0 auto;accent-color:var(--ok)}
+.quiz{margin-top:18px}
+.quiz p.q{font-weight:800;margin:14px 0 8px}
+.quiz button.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer;min-height:44px}
+.quiz button.opt:hover{border-color:var(--accent)}
+.quiz button.opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.feedback{display:none;margin-top:8px;font-weight:700}
+.feedback.right{display:block;color:var(--ok)}
+.feedback.wrong{display:block;color:#b42318}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .feedback.wrong{color:#ff8a80}}
+:root[data-theme="dark"] .feedback.wrong{color:#ff8a80}
+.task input:disabled,.task input:disabled+*{opacity:.5;cursor:not-allowed}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:800;border:0;cursor:pointer;font:inherit;font-weight:800;min-height:44px}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:26px 0 40px}
+.final{text-align:center}
+.note{font-size:14px;color:var(--muted)}
+@media (max-width:520px){body{font-size:16px}.card{padding:18px}}
+</style>
+<link rel="canonical" href="https://panoskhan.online/free-ai-academy-greece/courses/hackathon-ready.html">
+<meta property="og:title" content="Έτοιμος/η για AI Hackathon — Δωρεάν μάθημα AI | Free AI Academy Greece">
+<meta property="og:description" content="Προετοιμασία για AI hackathon στα ελληνικά: επιλογή προβλήματος, ομάδα, σχέδιο 72 ωρών, demo που δεν σπάει και pitch με βάση τα κριτήρια αξιολόγησης.">
+<meta property="og:url" content="https://panoskhan.online/free-ai-academy-greece/courses/hackathon-ready.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Free AI Academy Greece">
+<meta property="og:locale" content="el_GR">
+<meta property="og:image" content="https://panoskhan.online/assets/og/og-free-ai-academy-greece.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://panoskhan.online/assets/og/og-free-ai-academy-greece.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "Έτοιμος/η για AI Hackathon", "description": "Προετοιμασία για AI hackathon στα ελληνικά: επιλογή προβλήματος, ομάδα, σχέδιο 72 ωρών, demo που δεν σπάει και pitch με βάση τα κριτήρια αξιολόγησης.", "url": "https://panoskhan.online/free-ai-academy-greece/courses/hackathon-ready.html", "inLanguage": "el", "isAccessibleForFree": true, "provider": {"@type": "EducationalOrganization", "name": "Free AI Academy Greece", "url": "https://panoskhan.online/free-ai-academy-greece/"}, "offers": {"@type": "Offer", "category": "Free", "price": 0, "priceCurrency": "EUR"}, "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "Online", "courseWorkload": "PT50M"}}</script>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/icons/icon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Free AI Academy Greece", "item": "https://panoskhan.online/free-ai-academy-greece/"}, {"@type": "ListItem", "position": 2, "name": "Μαθήματα", "item": "https://panoskhan.online/free-ai-academy-greece/courses/"}, {"@type": "ListItem", "position": 3, "name": "Έτοιμος/η για AI Hackathon", "item": "https://panoskhan.online/free-ai-academy-greece/courses/hackathon-ready.html"}]}</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a href="../">Free AI Academy Greece</a>
+    <a href="./">← Όλα τα μαθήματα</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="title">
+    <div class="eyebrow">Επίπεδο 14 · 5 μαθήματα · περίπου 50 λεπτά</div>
+    <h1 id="title">Έτοιμος/η για AI Hackathon</h1>
+    <p>Ένα hackathon είναι λίγες μέρες εντατικής δουλειάς με ομάδα, mentors και κριτές. Αυτό το μάθημα σε προετοιμάζει ώστε να φτάσεις με σωστό πρόβλημα, ρεαλιστικό πλάνο και demo που αντέχει. Ταιριάζει με το AI Hackathon Greece, αλλά ισχύει για κάθε AI hackathon.</p>
+    <div class="progress" aria-live="polite">
+      <div class="bar" role="progressbar" aria-label="Πρόοδος μαθήματος" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="barfill"></span></div>
+      <small id="progtext">Πρόοδος: 0 από 5 μαθήματα</small>
+    </div>
+  </section>
+
+  <div class="tip" style="margin-top:0"><span class="rule">AI Hackathon Greece 2027:</span> Σύμφωνα με τη σελίδα της διοργάνωσης, γίνεται 19–21 Μαρτίου 2027 στην Αθήνα από το ACE του Οικονομικού Πανεπιστημίου Αθηνών. Οι αιτήσεις ανοίγουν τον Δεκέμβριο και η συμμετοχή είναι δωρεάν για όσους επιλεγούν. Ημερομηνίες και κανόνες μπορεί να αλλάξουν, οπότε έλεγξε πάντα το <a href="https://hackathongreece.ai/" rel="noopener">hackathongreece.ai</a>.</div>
+
+  <ol class="toc" aria-label="Μαθήματα">
+    <li><a href="#l1">1. Διάλεξε πρόβλημα που χωράει σε 72 ώρες <span class="done" data-done="l1"></span></a></li>
+    <li><a href="#l2">2. Ομάδα και ρόλοι <span class="done" data-done="l2"></span></a></li>
+    <li><a href="#l3">3. Το σχέδιο των 72 ωρών <span class="done" data-done="l3"></span></a></li>
+    <li><a href="#l4">4. Demo που δεν σπάει <span class="done" data-done="l4"></span></a></li>
+    <li><a href="#l5">5. Pitch με βάση τα κριτήρια <span class="done" data-done="l5"></span></a></li>
+  </ol>
+
+  <section class="card" id="l1" data-lesson="l1">
+    <div class="lesson-num">Μάθημα 1 από 5</div>
+    <h2>Διάλεξε πρόβλημα που χωράει σε 72 ώρες</h2>
+    <p>Στα περισσότερα AI hackathons μπορείς είτε να φέρεις τη δική σου ιδέα είτε να δουλέψεις σε challenge ενός χορηγού. Το challenge έχει έτοιμο πρόβλημα και συχνά δεδομένα και mentors από την εταιρεία. Η δική σου ιδέα σου δίνει περισσότερο πάθος, αλλά πρέπει να πείσεις μόνος σου ότι το πρόβλημα υπάρχει.</p>
+    <p>Το πρόβλημα είναι καλό όταν μπορείς να το πεις σε μία πρόταση, να δείξεις ποιος το έχει και να φανταστείς ένα demo που λειτουργεί σε τρεις μέρες. Αν χρειάζεσαι άδεια από φορέα, πραγματικά δεδομένα που δεν έχεις ή εκπαίδευση μεγάλου μοντέλου, είναι πολύ μεγάλο για hackathon.</p>
+    <p>Αν φέρεις υπάρχον project, έλεγξε τους κανόνες: συνήθως επιτρέπεται μόνο αν η ουσιαστική δουλειά γίνει κατά τη διάρκεια της διοργάνωσης.</p>
+    <div class="tip"><span class="rule">Κανόνας Academy:</span> Ένα πρόβλημα, μία πρόταση, ένα demo. Ό,τι δεν χωράει στις 72 ώρες πάει στο «επόμενα βήματα» της παρουσίασης.</div>
+
+    <div class="task" aria-labelledby="t1">
+      <h3 id="t1">Πρακτική άσκηση 1: Γράψε το πρόβλημα σε μία πρόταση</h3>
+      <p>Γράψε τρεις υποψήφιες ιδέες. Για καθεμία γράψε μία πρόταση προβλήματος και το ένα πράγμα που θα έδειχνε το demo. Κράτα αυτή που χωράει πιο άνετα σε 72 ώρες.</p>
+      <ul>
+        <li><label><input type="checkbox" data-task="l1-a"> Έχω τρεις ιδέες με μία πρόταση η καθεμία.</label></li>
+        <li><label><input type="checkbox" data-task="l1-b"> Διάλεξα μία και έγραψα γιατί χωράει σε 72 ώρες.</label></li>
+      </ul>
+    </div>
+
+    <div class="quiz" data-quiz="l1">
+      <p class="q">Ποιο πρόβλημα ταιριάζει καλύτερα σε hackathon;</p>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Α. Εκπαίδευση νέου μεγάλου γλωσσικού μοντέλου από το μηδέν</button>
+      <button class="opt" type="button" data-correct="true" aria-pressed="false">Β. Ένα συγκεκριμένο πρόβλημα με demo που λειτουργεί σε τρεις μέρες</button>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Γ. Μια πλατφόρμα που λύνει όλα τα προβλήματα μιας πόλης</button>
+      <p class="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="l2" data-lesson="l2">
+    <div class="lesson-num">Μάθημα 2 από 5</div>
+    <h2>Ομάδα και ρόλοι</h2>
+    <p>Μια καλή ομάδα hackathon έχει συνήθως 3 με 5 άτομα και καλύπτει τέσσερις ρόλους: κάποιον που χτίζει (κώδικας, AI), κάποιον που σχεδιάζει την εμπειρία, κάποιον που ξέρει το πεδίο του προβλήματος και κάποιον που κρατάει το pitch και τον χρόνο. Ένα άτομο μπορεί να καλύψει δύο ρόλους.</p>
+    <p>Αν πας μόνος/η, μη σε τρομάζει. Πολλά hackathons, όπως το AI Hackathon Greece, βοηθούν μεμονωμένους συμμετέχοντες να βρουν ομάδα. Φέρε κάτι συγκεκριμένο να προσφέρεις: «ξέρω Python και prompt design» είναι πιο χρήσιμο από «ξέρω λίγο από όλα».</p>
+    <p>Συμφωνήστε από την αρχή ποιος αποφασίζει όταν διαφωνείτε. Στις 3 τα ξημερώματα δεν είναι ώρα για συζήτηση.</p>
+    <div class="tip"><span class="rule">Κανόνας Academy:</span> Κάθε άτομο ξέρει τον ρόλο του από την πρώτη ώρα. Ένα άτομο έχει τον τελικό λόγο για το scope.</div>
+
+    <div class="task" aria-labelledby="t2">
+      <h3 id="t2">Πρακτική άσκηση 2: Χάρτης ρόλων</h3>
+      <p>Γράψε τους τέσσερις ρόλους και ποιος τους καλύπτει (ή ποιον ψάχνεις). Αν πας μόνος/η, γράψε σε μία πρόταση τι προσφέρεις σε μια ομάδα.</p>
+      <ul>
+        <li><label><input type="checkbox" data-task="l2-a"> Οι τέσσερις ρόλοι έχουν όνομα ή σημείωση «ψάχνω».</label></li>
+        <li><label><input type="checkbox" data-task="l2-b"> Έγραψα ποιος αποφασίζει για το scope.</label></li>
+      </ul>
+    </div>
+
+    <div class="quiz" data-quiz="l2">
+      <p class="q">Τι είναι πιο χρήσιμο να πεις όταν ψάχνεις ομάδα;</p>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Α. «Ξέρω λίγο από όλα»</button>
+      <button class="opt" type="button" data-correct="true" aria-pressed="false">Β. Ένα συγκεκριμένο πράγμα που μπορείς να χτίσεις ή να κάνεις</button>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Γ. Τίποτα· θα φανεί στην πορεία</button>
+      <p class="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="l3" data-lesson="l3">
+    <div class="lesson-num">Μάθημα 3 από 5</div>
+    <h2>Το σχέδιο των 72 ωρών</h2>
+    <p>Χώρισε τον χρόνο σε τέσσερα κομμάτια: <strong>ορισμός</strong> (πρόβλημα, χρήστης, demo path), <strong>κατασκευή</strong> του ελάχιστου που λειτουργεί από άκρη σε άκρη, <strong>σταθεροποίηση</strong> (feature freeze, δοκιμές, διορθώσεις) και <strong>pitch</strong> (παρουσίαση, πρόβα, εφεδρικό βίντεο).</p>
+    <p>Ορίστε ένα <strong>feature freeze</strong>, μια ώρα μετά την οποία δεν προσθέτετε τίποτα νέο, μόνο διορθώνετε. Χωρίς αυτό, το demo σπάει την τελευταία νύχτα.</p>
+    <p>Χρησιμοποίησε δοκιμαστικά δεδομένα όπου δεν έχεις πραγματικά, και πες το καθαρά. Οι κριτές εκτιμούν ένα ειλικρινές «αυτά είναι mock δεδομένα, ο πραγματικός δρόμος είναι Χ» πολύ περισσότερο από μια ψεύτικη υπόσχεση.</p>
+    <div class="tip"><span class="rule">Κανόνας Academy:</span> Πρώτα κάτι που δουλεύει από την αρχή ως το τέλος, μετά βελτιώσεις. Μετά το feature freeze, μόνο διορθώσεις.</div>
+
+    <div class="task" aria-labelledby="t3">
+      <h3 id="t3">Πρακτική άσκηση 3: Γράψε το χρονοδιάγραμμα</h3>
+      <p>Γράψε ένα χρονοδιάγραμμα 72 ωρών με τα τέσσερα κομμάτια, την ώρα του feature freeze και το demo path: τα 3–5 βήματα που θα δείξετε ζωντανά.</p>
+      <ul>
+        <li><label><input type="checkbox" data-task="l3-a"> Έχω χρονοδιάγραμμα με ώρα feature freeze.</label></li>
+        <li><label><input type="checkbox" data-task="l3-b"> Έγραψα το demo path σε 3–5 βήματα.</label></li>
+      </ul>
+    </div>
+
+    <div class="quiz" data-quiz="l3">
+      <p class="q">Τι σημαίνει feature freeze;</p>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Α. Ότι η ομάδα σταματά να δουλεύει</button>
+      <button class="opt" type="button" data-correct="true" aria-pressed="false">Β. Μετά από ένα σημείο δεν προσθέτεις νέες λειτουργίες, μόνο διορθώνεις</button>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Γ. Ότι παγώνεις τον κώδικα στο GitHub για πάντα</button>
+      <p class="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="l4" data-lesson="l4">
+    <div class="lesson-num">Μάθημα 4 από 5</div>
+    <h2>Demo που δεν σπάει</h2>
+    <p>Τα ζωντανά demo αποτυγχάνουν για απλούς λόγους: πέφτει το Wi-Fi, ένα API αργεί ή τελειώνουν τα credits. Ετοίμασε πάντα: τοπικά ή δοκιμαστικά δεδομένα που δεν χρειάζονται internet, ένα εφεδρικό βίντεο 60–90 δευτερολέπτων με το demo path και screenshots για κάθε βήμα.</p>
+    <p>Δείξε και την αποτυχία με ελεγχόμενο τρόπο. Ένα σύστημα που λέει σωστά «δεν ξέρω» ή απορρίπτει μια κακή είσοδο δείχνει ωριμότητα. Στο Gatekeeper-OS, για παράδειγμα, οι δοκιμές με πειραγμένο και ληγμένο πάσο είναι μέρος του demo.</p>
+    <p>Μην ανεβάζεις κλειδιά API σε δημόσιο repository ή σε κώδικα που τρέχει στον browser. Κράτησέ τα σε μεταβλητές περιβάλλοντος.</p>
+    <div class="tip"><span class="rule">Κανόνας Academy:</span> Αν το demo χρειάζεται internet για να δουλέψει, ετοίμασε εκδοχή που δεν χρειάζεται. Και πάντα εφεδρικό βίντεο.</div>
+
+    <div class="task" aria-labelledby="t4">
+      <h3 id="t4">Πρακτική άσκηση 4: Ετοίμασε το εφεδρικό σχέδιο</h3>
+      <p>Γράψε τρία πράγματα που μπορεί να χαλάσουν στο demo σου και τι κάνεις σε καθένα. Σημείωσε πού βρίσκονται τα κλειδιά API και ότι δεν είναι στο repository.</p>
+      <ul>
+        <li><label><input type="checkbox" data-task="l4-a"> Έγραψα τρεις πιθανές αποτυχίες με το σχέδιο αντιμετώπισης.</label></li>
+        <li><label><input type="checkbox" data-task="l4-b"> Επιβεβαίωσα ότι δεν υπάρχουν κλειδιά API στο repository.</label></li>
+      </ul>
+    </div>
+
+    <div class="quiz" data-quiz="l4">
+      <p class="q">Τι κάνεις αν πέσει το internet λίγο πριν το demo;</p>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Α. Ακυρώνεις την παρουσίαση</button>
+      <button class="opt" type="button" data-correct="true" aria-pressed="false">Β. Δείχνεις την τοπική εκδοχή ή το εφεδρικό βίντεο που ετοίμασες</button>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Γ. Ζητάς από τους κριτές να περιμένουν</button>
+      <p class="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="l5" data-lesson="l5">
+    <div class="lesson-num">Μάθημα 5 από 5</div>
+    <h2>Pitch με βάση τα κριτήρια</h2>
+    <p>Οι κριτές βαθμολογούν με κριτήρια. Στο AI Hackathon Greece η αξιολόγηση συνδυάζει: καινοτομία και ταίριασμα λύσης με το πρόβλημα, τεχνική υλοποίηση και χρήση AI, εκτέλεση της ομάδας, επιχειρηματική προοπτική και κλιμάκωση, και συνολικό αντίκτυπο. Χτίσε το pitch γύρω από αυτά, όχι γύρω από το τι σου αρέσει περισσότερο.</p>
+    <p>Μια απλή δομή για 3 λεπτά: <strong>πρόβλημα</strong> με έναν πραγματικό άνθρωπο (30″), <strong>λύση</strong> σε μία πρόταση (15″), <strong>ζωντανό demo</strong> (90″), <strong>πώς δουλεύει και τι είναι ακόμη mock</strong> (20″), <strong>επόμενο βήμα</strong> και τι χρειάζεστε (25″).</p>
+    <p>Κάνε τουλάχιστον δύο πρόβες με χρονόμετρο. Ετοίμασε απαντήσεις για τις τρεις πιο δύσκολες ερωτήσεις που μπορεί να κάνει ένας κριτής.</p>
+    <div class="tip"><span class="rule">Κανόνας Academy:</span> Κάθε κριτήριο αξιολόγησης πρέπει να απαντιέται κάπου στο pitch. Αν κάποιο λείπει, το pitch δεν είναι έτοιμο.</div>
+
+    <div class="task" aria-labelledby="t5">
+      <h3 id="t5">Πρακτική άσκηση 5: Γράψε και δοκίμασε το pitch</h3>
+      <p>Γράψε το pitch 3 λεπτών με τη δομή του μαθήματος. Σημείωσε δίπλα σε κάθε κομμάτι ποιο κριτήριο καλύπτει. Κάνε μία πρόβα με χρονόμετρο.</p>
+      <ul>
+        <li><label><input type="checkbox" data-task="l5-a"> Κάθε κριτήριο καλύπτεται σε κάποιο σημείο του pitch.</label></li>
+        <li><label><input type="checkbox" data-task="l5-b"> Έκανα πρόβα με χρονόμετρο και χωράει στα 3 λεπτά.</label></li>
+      </ul>
+    </div>
+
+    <div class="quiz" data-quiz="l5">
+      <p class="q">Πώς χτίζεις ένα δυνατό pitch για hackathon;</p>
+      <button class="opt" type="button" data-correct="true" aria-pressed="false">Α. Γύρω από τα κριτήρια αξιολόγησης, με ζωντανό demo</button>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Β. Με όσο περισσότερες τεχνικές λεπτομέρειες γίνεται</button>
+      <button class="opt" type="button" data-correct="false" aria-pressed="false">Γ. Με υποσχέσεις για λειτουργίες που δεν έχετε φτιάξει</button>
+      <p class="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card final" aria-labelledby="final">
+    <div class="lesson-num">Τελική εργασία</div>
+    <h2 id="final">Παραδοτέο: το πακέτο αίτησης</h2>
+    <p>Ένα έγγραφο έτοιμο για αίτηση σε hackathon: πρόβλημα σε μία πρόταση, ομάδα και ρόλοι (ή τι προσφέρεις αν πας μόνος/η), χρονοδιάγραμμα 72 ωρών, demo path με εφεδρικό σχέδιο και pitch 3 λεπτών.</p>
+    <div class="task" aria-labelledby="fin-task" style="text-align:left">
+      <h3 id="fin-task">Ελέγχος ολοκλήρωσης</h3>
+      <ul>
+        <li><label><input type="checkbox" data-task="final-a"> Το πακέτο έχει και τις πέντε ενότητες.</label></li>
+        <li><label><input type="checkbox" data-task="final-b"> Έλεγξα τους επίσημους κανόνες και τις ημερομηνίες του hackathon που με ενδιαφέρει.</label></li>
+      </ul>
+    </div>
+    <p class="note" id="finalmsg">Ολοκλήρωσε τα 5 μαθήματα για να ξεκλειδώσει η τελική εργασία.</p>
+    <div class="nav">
+      <a class="btn ghost" href="./">← Όλα τα μαθήματα</a>
+      <a class="btn" href="../portfolio/">Πήγαινε στο Portfolio →</a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var KEY = "fa-hackathon-ready-progress";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  var lessons = ["l1", "l2", "l3", "l4", "l5"];
+
+  function lessonDone(id) {
+    var boxes = document.querySelectorAll('[data-task^="' + id + '-"]');
+    var allTasks = boxes.length === 0 || Array.prototype.every.call(boxes, function (b) { return b.checked; });
+    return !!state["quiz-" + id] && allTasks;
+  }
+
+  function refresh() {
+    var done = 0;
+    lessons.forEach(function (id) {
+      var ok = lessonDone(id);
+      if (ok) done++;
+      var mark = document.querySelector('[data-done="' + id + '"]');
+      if (mark) mark.textContent = ok ? "✓ Ολοκληρώθηκε" : "";
+    });
+    var pct = Math.round((done / lessons.length) * 100);
+    document.getElementById("barfill").style.width = pct + "%";
+    document.querySelector('[role="progressbar"]').setAttribute("aria-valuenow", String(pct));
+    document.getElementById("progtext").textContent = "Πρόοδος: " + done + " από " + lessons.length + " μαθήματα";
+
+    var unlocked = done === lessons.length;
+    document.querySelectorAll('[data-task^="final-"]').forEach(function (b) {
+      b.disabled = !unlocked;
+      if (!unlocked && b.checked) { b.checked = false; state[b.getAttribute("data-task")] = false; save(); }
+    });
+    var finalDone = unlocked && !!state["final-a"] && !!state["final-b"];
+    var msg = document.getElementById("finalmsg");
+    if (done < lessons.length) {
+      msg.textContent = "Ολοκλήρωσε τα 5 μαθήματα για να ξεκλειδώσει η τελική εργασία.";
+    } else if (finalDone) {
+      msg.textContent = "Ολοκλήρωσες το μάθημα. Μπράβο! Πρόσθεσε την εργασία σου στο portfolio.";
+    } else {
+      msg.textContent = "Όλα τα μαθήματα είναι ξεκλείδωτα. Ολοκλήρωσε την τελική εργασία.";
+    }
+  }
+
+  // Restore checkboxes
+  document.querySelectorAll("[data-task]").forEach(function (box) {
+    var key = box.getAttribute("data-task");
+    box.checked = !!state[key];
+    box.addEventListener("change", function () {
+      state[key] = box.checked;
+      save();
+      refresh();
+    });
+  });
+
+  // Quizzes
+  document.querySelectorAll("[data-quiz]").forEach(function (quiz) {
+    var id = quiz.getAttribute("data-quiz");
+    var feedback = quiz.querySelector(".feedback");
+    var buttons = quiz.querySelectorAll("button.opt");
+
+    function show(correct) {
+      feedback.className = "feedback " + (correct ? "right" : "wrong");
+      feedback.textContent = correct ? "✓ Σωστά!" : "Όχι ακόμη. Διάβασε ξανά τον κανόνα του μαθήματος.";
+    }
+
+    if (state["quiz-" + id]) {
+      feedback.className = "feedback right";
+      feedback.textContent = "✓ Το quiz το έχεις ήδη ολοκληρώσει.";
+    }
+
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn.addEventListener("click", function () {
+        var correct = btn.getAttribute("data-correct") === "true";
+        Array.prototype.forEach.call(buttons, function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+        show(correct);
+        if (correct) {
+          state["quiz-" + id] = true;
+          save();
+          refresh();
+        }
+      });
+    });
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
