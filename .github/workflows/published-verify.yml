@@ -125,7 +125,7 @@ jobs:
           # og:image / twitter:image used by every indexed page; served from the domain root repo.
           url='https://panoskhan.online/assets/og/og-free-ai-academy-greece.png'
           grep -q "$url" index.html || { echo "index.html no longer references $url; update this check"; exit 1; }
-          type=$(curl -L -fsS --max-time 20 -o /tmp/og.png -w '%{content_type}' "$url")
+          type=$(curl -L -fsS --max-time 20 --retry 6 --retry-delay 10 --retry-max-time 120 -o /tmp/og.png -w '%{content_type}' "$url")
           case "$type" in image/png*) ;; *) echo "Unexpected content type for OG image: $type"; exit 1;; esac
           python3 - <<'PY'
           import struct
