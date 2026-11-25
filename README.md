@@ -39,6 +39,15 @@ Help people in Greece understand AI, build useful tools, test their work respons
 5. GitHub & Self-Hosting
 6. Responsible AI
 
+## Specialisation courses
+
+Beyond the six-course core, eight more courses (07–14) cover Python, business, image AI, data, app building and study skills, plus:
+
+- **13 · AI για δημόσιες υπηρεσίες** — a civic-tech course built on the Gatekeeper-OS case study: the citizen's problem, honest failure states, privacy by design, input validation and signed passes, and how to move from a mock-data prototype to a permitted pilot.
+- **14 · Έτοιμος/η για AI Hackathon** — preparation for AI hackathons such as AI Hackathon Greece: a 72-hour problem, team roles, schedule and feature freeze, a demo that survives failure, and a pitch built on the judging criteria.
+
+Completing courses 11, 13 and 14 earns the **Civic Builder** badge on the student dashboard.
+
 ## Learning philosophy
 
 **Learn → Quiz → Build → Test → Document → Publish.**
