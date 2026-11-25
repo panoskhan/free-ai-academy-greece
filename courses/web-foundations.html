@@ -75,6 +75,7 @@ a{color:var(--accent)}
 <link rel="icon" href="../assets/icons/icon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Free AI Academy Greece", "item": "https://panoskhan.online/free-ai-academy-greece/"}, {"@type": "ListItem", "position": 2, "name": "Μαθήματα", "item": "https://panoskhan.online/free-ai-academy-greece/courses/"}, {"@type": "ListItem", "position": 3, "name": "Web Foundations", "item": "https://panoskhan.online/free-ai-academy-greece/courses/web-foundations.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Χρειάζομαι προηγούμενη εμπειρία στον προγραμματισμό;", "acceptedAnswer": {"@type": "Answer", "text": "Όχι. Το μάθημα ξεκινά από το μηδέν και κάθε έννοια συνοδεύεται από μια μικρή πρακτική άσκηση που κάνεις στον υπολογιστή σου."}}, {"@type": "Question", "name": "Πόσο χρόνο χρειάζεται;", "acceptedAnswer": {"@type": "Answer", "text": "Περίπου 60 λεπτά για τα 4 μαθήματα και μία ακόμη ώρα για την τελική εργασία. Η πρόοδός σου αποθηκεύεται στον browser, οπότε μπορείς να συνεχίσεις όποτε θέλεις."}}, {"@type": "Question", "name": "Γιατί να μάθω HTML και CSS αφού το AI γράφει κώδικα;", "acceptedAnswer": {"@type": "Answer", "text": "Γιατί το AI κάνει λάθη. Αν καταλαβαίνεις τη δομή μιας σελίδας, μπορείς να ελέγξεις αν ο κώδικας είναι σωστός, προσβάσιμος και ασφαλής πριν τον δημοσιεύσεις."}}, {"@type": "Question", "name": "Παίρνω βεβαίωση;", "acceptedAnswer": {"@type": "Answer", "text": "Μετά την ολοκλήρωση των μαθημάτων και του παραδοτέου μπορείς να καταγράψεις την εργασία στο Portfolio. Δες τη σελίδα Βεβαιώσεις για τις προϋποθέσεις. Η βεβαίωση είναι εκπαιδευτική και όχι πιστοποιημένος τίτλος."}}]}</script>
 </head>
 <body>
 <header class="topbar">
@@ -93,6 +94,21 @@ a{color:var(--accent)}
       <div class="bar" role="progressbar" aria-label="Πρόοδος μαθήματος" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="barfill"></span></div>
       <small id="progtext">Πρόοδος: 0 από 4 μαθήματα</small>
     </div>
+  </section>
+
+  <section class="card" aria-labelledby="about-course">
+    <h2 id="about-course">Τι θα μάθεις σε αυτό το μάθημα</h2>
+    <p>Το Web Foundations είναι το πρώτο τεχνικό βήμα της Academy. Πριν φτιάξεις εφαρμογές με AI, χρειάζεται να καταλαβαίνεις πώς στήνεται μια web σελίδα: τι κάνει το HTML, πώς το CSS αλλάζει την εμφάνιση και πώς η JavaScript προσθέτει αλληλεπίδραση. Όταν ένα εργαλείο AI σου προτείνει κώδικα, αυτές οι γνώσεις σού επιτρέπουν να τον διαβάσεις, να τον ελέγξεις και να τον διορθώσεις αντί να τον αντιγράφεις στα τυφλά.</p>
+    <ul>
+      <li>Να γράφεις σωστό, σημασιολογικό HTML με headings, λίστες, links και κουμπιά.</li>
+      <li>Να κάνεις μια σελίδα responsive με CSS και <code>@media</code> queries, ξεκινώντας από το κινητό.</li>
+      <li>Να συνδέεις JavaScript με γεγονότα (events) όπως το κλικ και να αλλάζεις περιεχόμενο στη σελίδα.</li>
+      <li>Να ελέγχεις την προσβασιμότητα με πληκτρολόγιο και να κάνεις debugging με τα Developer Tools του browser.</li>
+    </ul>
+    <h3>Για ποιον είναι</h3>
+    <p>Για αρχάριους χωρίς εμπειρία προγραμματισμού, μαθητές, φοιτητές και επαγγελματίες που θέλουν να καταλαβαίνουν τον κώδικα που παράγουν τα εργαλεία AI. Δεν χρειάζεται εγκατάσταση: αρκεί ένας browser και ένας απλός επεξεργαστής κειμένου, όπως το VS Code ή ακόμη και το Notepad.</p>
+    <h3>Τι θα έχεις στο τέλος</h3>
+    <p>Μια μικρή, δική σου web σελίδα με HTML, CSS και JavaScript και ένα README που εξηγεί τι έφτιαξες. Μπορείς να τη δημοσιεύσεις δωρεάν με GitHub Pages στο μάθημα <a href="github-self-hosting.html">GitHub &amp; Self-Hosting</a> και να την προσθέσεις στο <a href="../portfolio/">Portfolio</a> σου.</p>
   </section>
 
   <ol class="toc" aria-label="Μαθήματα">
@@ -215,6 +231,39 @@ a{color:var(--accent)}
       <a class="btn ghost" href="./">← Όλα τα μαθήματα</a>
       <a class="btn" href="../portfolio/">Πήγαινε στο Portfolio →</a>
     </div>
+  </section>
+  <section class="card" aria-labelledby="mistakes">
+    <h2 id="mistakes">Συχνά λάθη αρχαρίων</h2>
+    <ul>
+      <li><strong>Ξεχασμένο <code>&lt;meta name="viewport"&gt;</code>:</strong> χωρίς αυτό η σελίδα εμφανίζεται μικροσκοπική στο κινητό, ακόμη κι αν έχεις γράψει media queries.</li>
+      <li><strong>Λάθος διαδρομή αρχείου:</strong> αν το <code>style.css</code> ή το <code>script.js</code> δεν φορτώνει, έλεγξε το όνομα και τον φάκελο στο tab Network των Developer Tools.</li>
+      <li><strong>JavaScript πριν από το HTML:</strong> αν το script τρέχει πριν υπάρξει το στοιχείο, το <code>querySelector</code> επιστρέφει <code>null</code>. Βάλε το script στο τέλος του body ή χρησιμοποίησε <code>defer</code>.</li>
+      <li><strong>Κουμπιά φτιαγμένα από <code>div</code>:</strong> δεν λειτουργούν με πληκτρολόγιο ούτε με screen reader. Χρησιμοποίησε <code>&lt;button&gt;</code>.</li>
+      <li><strong>Εικόνες χωρίς <code>alt</code>:</strong> κάθε εικόνα με νόημα χρειάζεται σύντομη περιγραφή.</li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="faq">
+    <h2 id="faq">Συχνές ερωτήσεις</h2>
+    <h3>Χρειάζομαι προηγούμενη εμπειρία στον προγραμματισμό;</h3>
+    <p>Όχι. Το μάθημα ξεκινά από το μηδέν και κάθε έννοια συνοδεύεται από μια μικρή πρακτική άσκηση που κάνεις στον υπολογιστή σου.</p>
+    <h3>Πόσο χρόνο χρειάζεται;</h3>
+    <p>Περίπου 60 λεπτά για τα 4 μαθήματα και μία ακόμη ώρα για την τελική εργασία. Η πρόοδός σου αποθηκεύεται στον browser, οπότε μπορείς να συνεχίσεις όποτε θέλεις.</p>
+    <h3>Γιατί να μάθω HTML και CSS αφού το AI γράφει κώδικα;</h3>
+    <p>Γιατί το AI κάνει λάθη. Αν καταλαβαίνεις τη δομή μιας σελίδας, μπορείς να ελέγξεις αν ο κώδικας είναι σωστός, προσβάσιμος και ασφαλής πριν τον δημοσιεύσεις.</p>
+    <h3>Παίρνω βεβαίωση;</h3>
+    <p>Μετά την ολοκλήρωση των μαθημάτων και του παραδοτέου μπορείς να καταγράψεις την εργασία στο Portfolio. Δες τη σελίδα Βεβαιώσεις για τις προϋποθέσεις. Η βεβαίωση είναι εκπαιδευτική και όχι πιστοποιημένος τίτλος.</p>
+  </section>
+
+  <section class="card" aria-labelledby="next">
+    <h2 id="next">Επόμενα βήματα</h2>
+    <p>Αφού ολοκληρώσεις το Web Foundations, συνέχισε με:</p>
+    <ul>
+      <li><a href="python-for-ai.html">Python για AI</a>: η γλώσσα που χρησιμοποιείται στα περισσότερα εργαλεία AI.</li>
+      <li><a href="ai-app-builder.html">AI App Builder</a>: φτιάξε μια web εφαρμογή με τη βοήθεια AI.</li>
+      <li><a href="github-self-hosting.html">GitHub &amp; Self-Hosting</a>: δημοσίευσε τη σελίδα σου δωρεάν.</li>
+      <li><a href="../student-path/">A–Z Path</a>: δες ολόκληρη τη διαδρομή της Academy.</li>
+    </ul>
   </section>
 </main>
 
